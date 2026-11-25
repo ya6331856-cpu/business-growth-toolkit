@@ -2,22 +2,4 @@
 /* Calculator interaction polish */
 .panel-kicker,.result-topline{display:flex;align-items:center;gap:9px;font-size:9px;letter-spacing:1.2px;font-weight:800;color:#668273;margin-bottom:13px}.panel-kicker>span,.result-spark{width:25px;height:25px;border-radius:8px;background:#e8f2eb;color:#28744f;display:grid;place-items:center;font-size:13px}.panel-intro{font-size:11px;color:#819087;margin:-10px 0 22px}.field-group-title{font-size:9px;letter-spacing:1.1px;color:#8a978f;font-weight:800;border-top:1px solid #edf0eb;padding-top:16px;margin-top:15px}.field-pair{display:grid;grid-template-columns:1fr 1fr;gap:13px}.input-wrap{position:relative}.input-wrap input{padding-right:55px}.input-wrap i{position:absolute;right:12px;top:15px;font-style:normal;font-size:10px;color:#87948c;pointer-events:none}.result-topline{color:#b6d2c0;margin-bottom:18px}.result-spark{background:#285844;color:#c9e4d1}.result-live{margin-left:auto;color:#b4d3bf;font-size:8px;letter-spacing:.7px}.result-live i{display:inline-block;width:6px;height:6px;background:#78c495;border-radius:50%;margin-right:5px}.result-panel h2{font-size:19px;margin-bottom:5px}.result-progress{height:5px;background:#345c4a;border-radius:8px;overflow:hidden;margin:-5px 0 13px}.result-progress>div{height:100%;background:#8cc79b;border-radius:8px;transition:width .2s}.result-tip{display:flex;gap:10px;background:#204c3c;border:1px solid #35614e;border-radius:10px;padding:12px;margin-top:19px}.result-tip>span{color:#b9d9c3;font-size:15px}.result-tip p{font-size:9px;line-height:1.6;color:#c2d8ca;margin:0}.result-tip b{display:block;color:#fff;font-size:10px;margin-bottom:3px}@media(max-width:560px){.field-pair{grid-template-columns:1fr;gap:0}.panel-intro{line-height:1.6}.result-topline{font-size:8px}}
 
-
-/* Currency selector and accessible calculator fields */
-.field select {
-  width: 100%; min-height: 46px; border: 1px solid #dce5dd; border-radius: 9px;
-  padding: 0 12px; font: inherit; font-size: 13px; color: var(--ink); background: #fff;
-  outline: none; transition: border-color .2s, box-shadow .2s;
-}
-.field select:focus-visible, .field input:focus-visible {
-  border-color: #6b9d7b; box-shadow: 0 0 0 3px #dff1e7;
-}
-.currency-field { margin-top: 4px; }
-.currency-field small { line-height: 1.55; }
-.tool-card-v2 { display: block; color: inherit; text-decoration: none; }
-.tool-card-v2:focus-visible, .text-link:focus-visible, .site-header a:focus-visible, .footer a:focus-visible {
-  outline: 3px solid #8db99a; outline-offset: 4px;
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-}
+.result-explainer { margin: 13px 0 0; padding: 11px 12px; border-radius: 9px; background: #204c3c; color: #d3e4d9; font-size: 10px; line-height: 1.65; }
