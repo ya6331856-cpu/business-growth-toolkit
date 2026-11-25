@@ -22,6 +22,7 @@ export default function InvoiceGenerator() {
   const subtotal = useMemo(() => items.reduce((sum, item) => sum + safe(item.quantity) * safe(item.rate), 0), [items]);
   const tax = subtotal * Math.min(100, safe(taxRate)) / 100;
   const total = subtotal + tax;
+  const dueDateInvalid = Boolean(dueDate && issueDate && dueDate < issueDate);
   const updateItem = (id: number, key: keyof Omit<LineItem, "id">, value: string) => setItems(current => current.map(item => item.id === id ? { ...item, [key]: value } : item));
   const addItem = () => setItems(current => [...current, { id: Math.max(0, ...current.map(item => item.id)) + 1, description: "", quantity: "1", rate: "0" }]);
   const removeItem = (id: number) => setItems(current => current.length > 1 ? current.filter(item => item.id !== id) : current);
@@ -36,10 +37,11 @@ export default function InvoiceGenerator() {
         <label className="field"><span>Bill to / Customer</span><input value={client} onChange={e=>setClient(e.target.value)} placeholder="Customer name or company"/></label>
         <label className="field"><span>Invoice number</span><input value={invoiceNo} onChange={e=>setInvoiceNo(e.target.value)} /></label>
         <label className="field"><span>Issue date</span><input type="date" value={issueDate} onChange={e=>setIssueDate(e.target.value)}/></label>
-        <label className="field"><span>Due date</span><input type="date" value={dueDate} onChange={e=>setDueDate(e.target.value)}/></label>
+        <label className="field"><span>Due date</span><input type="date" min={issueDate || undefined} value={dueDate} onChange={e=>setDueDate(e.target.value)}/></label>
         <label className="field"><span>Currency</span><select value={currency} onChange={e=>setCurrency(e.target.value)}>{["USD","INR","GBP","EUR","CAD","AUD","AED"].map(code=><option key={code}>{code}</option>)}</select></label>
         <label className="field"><span>Tax rate (%)</span><input type="number" min="0" max="100" step="0.01" value={taxRate} onChange={e=>setTaxRate(e.target.value)}/></label>
       </div>
+      {dueDateInvalid && <p className="field-error" role="alert">Due date must be on or after the issue date.</p>}
       <div className="invoice-items-heading"><div><span className="field-group-title">ITEMS & SERVICES</span></div><button type="button" className="invoice-add" onClick={addItem}>＋ Add item</button></div>
       <div className="invoice-line-list">
         {items.map((item,index)=><div className="invoice-line-editor" key={item.id}>
@@ -50,7 +52,7 @@ export default function InvoiceGenerator() {
         </div>)}
       </div>
       <label className="field"><span>Notes / payment terms</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
-      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
+      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={dueDateInvalid}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
     </section>
     <section className="invoice-preview panel" aria-live="polite">
       <div className="invoice-preview-label">LIVE PREVIEW <span>● UPDATING</span></div>
