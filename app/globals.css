@@ -54,3 +54,6 @@
 @media(max-width:850px){.cash-tool{grid-template-columns:1fr}}
 @media(max-width:560px){.cash-tool{padding:0 15px}.cash-inputs,.cash-result{padding:17px}.cash-field-grid{grid-template-columns:1fr}.cash-result-head{align-items:flex-start;flex-direction:column}.cash-result-head .invoice-add{align-self:flex-start}.cash-ending{padding:17px}.cash-ending>b{font-size:27px}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff!important}.cash-tool{display:block;max-width:none;margin:0;padding:0}.cash-inputs,.page-hero,.content-section,header,footer,.site-header,.site-footer{display:none!important}.cash-result{box-shadow:none!important;border:0!important;padding:0!important}.cash-ending,.cash-status{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* Date validation feedback for generated business documents */
+.field-error{margin:8px 0 12px;padding:9px 11px;border:1px solid #e7b9ad;border-radius:8px;background:#fff4f1;color:#8b3828;font-size:11px;font-weight:650}
