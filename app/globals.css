@@ -97,3 +97,33 @@ body{background:#fbfcf9;color:var(--ink)}
 @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:32px;padding-top:62px}.hero-copy{max-width:650px}.hero-product{min-height:410px}.hero-bottomline{justify-content:center}.home-intro{gap:35px}.workflow-band-inner{gap:45px}.directory-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.site-header{height:66px;padding:0 16px}.site-header nav{gap:14px;font-size:11px}.header-cta{padding:10px 11px;font-size:10px}.brand{font-size:19px}.hero-inner{padding:48px 20px 38px;min-height:0;gap:22px}.hero-copy h1{font-size:48px;letter-spacing:-3px}.hero-copy h1 em{letter-spacing:-3px}.hero-copy>p{font-size:13px;line-height:1.8}.hero-label{font-size:8px;letter-spacing:.8px}.hero-actions{gap:11px}.hero-primary,.hero-secondary{padding:14px 13px;font-size:10px;gap:14px}.hero-assurances{gap:10px;font-size:8px}.hero-product{min-height:345px}.product-window{width:95%;padding:16px}.product-title-row{margin:20px 0 13px}.product-title-row h2{font-size:18px}.product-main-metric strong{font-size:33px}.hero-float-card{left:-2px;bottom:16px;padding:9px}.hero-side-note{right:-2px;top:8px;width:67px;height:67px;font-size:6px}.hero-bottomline{padding:14px 18px;gap:9px 17px;font-size:7px}.home-intro{grid-template-columns:1fr;gap:14px;padding:55px 20px 30px}.home-intro h2,.home-bottom-cta h2{font-size:32px}.home-intro>p{font-size:12px}.featured-section{padding:35px 20px 58px}.featured-section h2{font-size:29px}.featured-grid{grid-template-columns:1fr;gap:12px}.featured-card{min-height:220px;padding:20px}.featured-link{left:20px;right:20px}.workflow-band{padding:49px 20px}.workflow-band-inner{grid-template-columns:1fr;gap:25px}.workflow-band-copy h2{font-size:32px}.home-bottom-cta{padding:54px 20px;align-items:flex-start;flex-direction:column}.page-hero{padding:48px 20px 25px}.page-hero h1{font-size:38px}.directory-grid{padding:10px 15px 55px}.directory-banner{padding:23px 20px}.directory-banner h2{font-size:20px}.directory-toolbar{align-items:flex-start}.directory-search{height:46px}.directory-tool-grid{grid-template-columns:1fr;gap:12px}.directory-tool-card{min-height:0;padding:19px}.directory-tool-card h3,.directory-tool-card p{min-height:0}.directory-filters{gap:6px}.filter-chip{padding:8px 11px;font-size:9px}}
 @media(prefers-reduced-motion:reduce){.featured-card,.hero-primary,.hero-secondary,.workflow-cta,.filter-chip{transition:none!important}}
+
+
+/* Inner tool workspace refinement */
+.page-hero{position:relative;padding-top:64px;padding-bottom:34px}
+.page-hero .eyebrow{margin-bottom:5px}
+.page-hero h1{max-width:820px;margin:17px 0 13px}
+.page-hero p{max-width:650px;color:#6d7d73;line-height:1.85}
+.calculator-layout{max-width:1180px;gap:22px;margin-bottom:58px}
+.calculator-form,.invoice-editor,.quote-editor,.receipt-editor{border:1px solid #e3eae2;border-radius:16px;box-shadow:0 12px 34px #183c2d09}
+.calculator-form{padding:30px}
+.calculator-form h2{font-size:21px;letter-spacing:-.7px}
+.calculator-form .field input,.calculator-form .field select{height:49px;border-radius:10px;background:#fcfdfb}
+.calculator-form .field input:hover,.calculator-form .field select:hover{border-color:#bdcfc0}
+.calculator-form .field input:focus,.calculator-form .field select:focus{outline:0;border-color:#4f8a65;box-shadow:0 0 0 3px #e1efe4}
+.result-panel{border-radius:16px;padding:29px;background:linear-gradient(150deg,#174a37,#103a2b);box-shadow:0 18px 38px #103d3021}
+.result-value{font-size:clamp(36px,4vw,48px);line-height:1.05;overflow-wrap:anywhere}
+.result-line{font-size:11px}
+.content-section{max-width:900px;padding:15px 24px 76px}
+.content-section h2{font-size:22px;letter-spacing:-.6px;margin:28px 0 10px}
+.content-section p,.content-section li{font-size:12px;line-height:1.9;color:#697a70}
+.faq{padding:17px 0;border-color:#e3eae2}
+.faq h3{font-size:13px}
+.invoice-tool,.quote-tool{max-width:1240px;gap:22px}
+.invoice-preview,.quote-preview{border:1px solid #e3eae2;border-radius:14px}
+.invoice-paper,.quote-paper{border-radius:5px}
+.directory-hero{padding-bottom:26px}
+.directory-banner-mark{font-size:44px;opacity:.75}
+.directory-search:focus-within{border-color:#78a786;box-shadow:0 0 0 3px #e4f1e6}
+.filter-chip:focus-visible,.directory-search button:focus-visible,.directory-empty button:focus-visible{outline:3px solid #8eb99a;outline-offset:2px}
+@media(max-width:700px){.page-hero{padding-top:45px;padding-bottom:26px}.calculator-layout{margin-bottom:38px;gap:14px}.calculator-form{padding:20px}.result-panel{padding:22px}.content-section{padding:5px 20px 55px}.content-section h2{font-size:19px}.content-section p,.content-section li{font-size:11px}.invoice-preview,.quote-preview{padding:12px}}
