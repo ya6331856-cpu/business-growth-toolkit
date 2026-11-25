@@ -38,7 +38,7 @@ export default function Home() {
           <div className="hero-side-note">LESS GUESSWORK<br/><b>MORE CONTROL</b></div>
         </div>
       </div>
-      <div className="hero-bottomline"><span>11 PRACTICAL TOOLS</span><span>4 BUSINESS CATEGORIES</span><span>NO SIGN-UP NEEDED</span><span>BUILT FOR SERVICE PROS</span></div>
+      <div className="hero-bottomline"><span>14 PRACTICAL TOOLS</span><span>4 BUSINESS CATEGORIES</span><span>NO SIGN-UP NEEDED</span><span>BUILT FOR SERVICE PROS</span></div>
     </section>
 
     <section className="home-intro section">
@@ -47,7 +47,7 @@ export default function Home() {
     </section>
 
     <section className="featured-section section">
-      <div className="section-head"><div><span className="section-kicker">THE ESSENTIALS</span><h2>Start with your numbers.</h2><p>Three practical tools to make your next business decision clearer.</p></div><Link className="section-action" href="/tools/">Browse all 11 tools <span>↗</span></Link></div>
+      <div className="section-head"><div><span className="section-kicker">THE ESSENTIALS</span><h2>Start with your numbers.</h2><p>Three practical tools to make your next business decision clearer.</p></div><Link className="section-action" href="/tools/">Browse all 14 tools <span>↗</span></Link></div>
       <div className="featured-grid">{featuredTools.map(tool => <Link className="featured-card" href={tool.href} key={tool.href}><div className="featured-card-top"><span className={`tool-icon ${tool.tone}`}>{tool.icon}</span><span>{tool.number}</span></div><small>{tool.tag}</small><h3>{tool.name}</h3><p>{tool.desc}</p><div className="featured-link">Open tool <b>↗</b></div></Link>)}</div>
     </section>
 
