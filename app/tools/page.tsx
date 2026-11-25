@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-export const metadata: Metadata = { title: "Free Business Tools for Service Professionals", description: "Browse free pricing, profit and planning calculators for service businesses and independent professionals.", alternates: { canonical: "/tools/" } };
-const toolItems = [
-{icon:"✦",name:"House Cleaning Price Calculator",desc:"Build a more informed quote from labour, supplies, travel and your target margin.",href:"/tools/house-cleaning-price-calculator/",tag:"CLEANING",tone:"mint",num:"01"},
-{icon:"↗",name:"Profit Margin Calculator",desc:"See how much profit remains after costs and understand your margin.",href:"/tools/profit-margin-calculator/",tag:"FINANCE",tone:"peach",num:"02"},
-{icon:"◷",name:"Hourly Rate Calculator",desc:"Set a sustainable hourly rate around your income goal and real working capacity.",href:"/tools/hourly-rate-calculator/",tag:"PRICING",tone:"blue",num:"03"},
-{icon:"◎",name:"Break-Even Point Calculator",desc:"Find the sales volume needed to cover fixed and variable costs.",href:"/tools/break-even-calculator/",tag:"PLANNING",tone:"mint",num:"04"},
-{icon:"＋",name:"Markup Calculator",desc:"Calculate a selling price and gross profit from item cost and markup.",href:"/tools/markup-calculator/",tag:"PRICING",tone:"peach",num:"05"},
-{icon:"▤",name:"Invoice Generator",desc:"Create a professional invoice with line items, tax, totals and a print-ready PDF layout.",href:"/tools/invoice-generator/",tag:"DOCUMENTS",tone:"blue",num:"06"},
-{icon:"✎",name:"Quotation Generator",desc:"Prepare a customer-ready estimate with scope, costs, tax and a validity date.",href:"/tools/quotation-generator/",tag:"DOCUMENTS",tone:"mint",num:"07"},
-{icon:"✓",name:"Receipt Generator",desc:"Create a payment receipt with amount, date, method and transaction reference.",href:"/tools/receipt-generator/",tag:"DOCUMENTS",tone:"peach",num:"08"},
-{icon:"▥",name:"Business Expense Tracker",desc:"Track monthly income, expenses and net profit, then export records to CSV.",href:"/tools/expense-tracker/",tag:"OPERATIONS",tone:"blue",num:"09"},
-{icon:"▤",name:"Profit & Loss Statement",desc:"Turn tracked monthly income and expenses into a printable financial summary.",href:"/tools/profit-loss-statement/",tag:"FINANCE",tone:"mint",num:"10"},
-{icon:"↔",name:"Cash Flow Calculator",desc:"Estimate cash coming in, money going out and your projected ending cash balance.",href:"/tools/cash-flow-calculator/",tag:"FINANCE",tone:"blue",num:"11"}
-];
-export default function Tools() { return <><section className="page-hero"><span className="eyebrow"><i/> THE SERVICEKITLY TOOLKIT</span><h1>Useful tools for <em>better business.</em></h1><p>Less guesswork, more clarity. Pick a tool, enter your numbers and get a practical result in seconds.</p></section><section className="section directory-grid"><div className="directory-banner"><div><span className="section-kicker">START HERE</span><h2>Make your next decision a smarter one.</h2><p>Free tools. Clear calculations. No account needed.</p></div><span aria-hidden="true" style={{fontSize:48,opacity:.75}}>✳</span></div><div className="tool-grid">{toolItems.map(tool=><Link className="tool-card tool-card-v2" href={tool.href} key={tool.href}><div className="tool-card-top"><span className={"tool-icon "+tool.tone}>{tool.icon}</span><span className="tool-number">{tool.num}</span></div><span className="tool-tag">{tool.tag}</span><h3>{tool.name}</h3><p>{tool.desc}</p><div className="card-bottom"><span>Open tool</span><b>↗</b></div></Link>)}</div></section></>; }
+import ToolDirectory from "@/components/ToolDirectory";
+
+export const metadata: Metadata = {
+  title: "Free Business Tools for Service Professionals",
+  description: "Browse free pricing, profit, document and planning tools for service businesses and independent professionals.",
+  alternates: { canonical: "/tools/" }
+};
+
+export default function Tools() {
+  return <>
+    <section className="page-hero directory-hero">
+      <span className="eyebrow"><i/> THE SERVICEKITLY TOOLKIT</span>
+      <h1>Find the right tool.<br/><em>Get back to work.</em></h1>
+      <p>Practical calculators and business documents for the decisions behind every job. Search by task or explore a category.</p>
+    </section>
+    <section className="section directory-grid">
+      <div className="directory-banner"><div><span className="section-kicker">BUILT AROUND YOUR WORK</span><h2>Less admin. More clarity.</h2><p>11 useful tools · Free to use · No account needed</p></div><span aria-hidden="true" className="directory-banner-mark">✳</span></div>
+      <ToolDirectory />
+    </section>
+  </>;
+}
