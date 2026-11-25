@@ -20,9 +20,12 @@ const toolItems: ToolItem[] = [
   {icon:"▥",name:"Business Expense Tracker",desc:"Track monthly income, expenses and net profit, then export records to CSV.",href:"/tools/expense-tracker/",tag:"OPERATIONS",category:"Operations",tone:"blue",num:"09"},
   {icon:"▤",name:"Profit & Loss Statement",desc:"Turn tracked monthly income and expenses into a printable financial summary.",href:"/tools/profit-loss-statement/",tag:"FINANCE",category:"Finance",tone:"mint",num:"10"},
   {icon:"↔",name:"Cash Flow Calculator",desc:"Estimate cash coming in, money going out and your projected ending balance.",href:"/tools/cash-flow-calculator/",tag:"FINANCE",category:"Finance",tone:"blue",num:"11"},
+  {icon:"◌",name:"Recurring Revenue Calculator",desc:"Model monthly service revenue with new clients, fees and customer churn.",href:"/tools/recurring-revenue-calculator/",tag:"GROWTH",category:"Growth",tone:"mint",num:"12"},
+  {icon:"⌁",name:"Lead Conversion Calculator",desc:"Measure enquiry conversion, booked revenue and marketing cost per job.",href:"/tools/lead-conversion-calculator/",tag:"MARKETING",category:"Growth",tone:"peach",num:"13"},
+  {icon:"☷",name:"Cleaning Checklist Generator",desc:"Build a room-by-room cleaning worksheet and track completed tasks.",href:"/tools/cleaning-checklist-generator/",tag:"OPERATIONS",category:"Operations",tone:"blue",num:"14"},
 ];
 
-const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations"];
+const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations", "Growth"];
 
 export default function ToolDirectory() {
   const [query, setQuery] = useState("");
