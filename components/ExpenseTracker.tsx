@@ -7,7 +7,7 @@ const format=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{s
 export default function ExpenseTracker(){
  const [entries,setEntries]=useState<Entry[]>([]),[ready,setReady]=useState(false),[kind,setKind]=useState<"income"|"expense">("expense"),[description,setDescription]=useState(""),[category,setCategory]=useState("Supplies"),[amount,setAmount]=useState(""),[date,setDate]=useState(today),[currency,setCurrency]=useState("USD"),[month,setMonth]=useState(today().slice(0,7));
  useEffect(()=>{try{const raw=window.localStorage.getItem("servicekitly-expense-entries-v1");if(raw){const parsed:unknown=JSON.parse(raw);if(Array.isArray(parsed))setEntries(parsed.filter((x):x is Entry=>x&&typeof x==="object"&&typeof x.id==="number"&&(x.kind==="income"||x.kind==="expense")&&typeof x.description==="string"&&typeof x.category==="string"&&typeof x.amount==="string"&&typeof x.date==="string"));}}catch{}setReady(true)},[]);
- useEffect(()=>{if(ready){try{window.localStorage.setItem("servicekitly-expense-entries-v1",JSON.stringify(entries))}catch{}}},[entries,ready]);
+ useEffect(()=>{if(ready){try{window.localStorage.setItem("servicekitly-expense-entries-v1",JSON.stringify(entries));window.dispatchEvent(new Event("servicekitly:records-updated"));}catch{}}},[entries,ready]);
  const monthly=useMemo(()=>entries.filter(x=>x.date.startsWith(month)),[entries,month]);
  const filtered=monthly.filter(x=>x.currency===currency);
  const legacyCount=monthly.filter(x=>!x.currency).length;
