@@ -23,6 +23,17 @@ const toolItems: ToolItem[] = [
   {icon:"◌",name:"Recurring Revenue Calculator",desc:"Model monthly service revenue with new clients, fees and customer churn.",href:"/tools/recurring-revenue-calculator/",tag:"GROWTH",category:"Growth",tone:"mint",num:"12"},
   {icon:"⌁",name:"Lead Conversion Calculator",desc:"Measure enquiry conversion, booked revenue and marketing cost per job.",href:"/tools/lead-conversion-calculator/",tag:"MARKETING",category:"Growth",tone:"peach",num:"13"},
   {icon:"☷",name:"Cleaning Checklist Generator",desc:"Build a room-by-room cleaning worksheet and track completed tasks.",href:"/tools/cleaning-checklist-generator/",tag:"OPERATIONS",category:"Operations",tone:"blue",num:"14"},
+  {icon:"◈",name:"Job Profit Calculator",desc:"See job profit after labour, materials, travel and overhead.",href:"/tools/job-profit-calculator/",tag:"FINANCE",category:"Finance",tone:"peach",num:"15"},
+  {icon:"◷",name:"Cleaning Time Estimator",desc:"Estimate cleaning hours from property size, rooms and team size.",href:"/tools/cleaning-time-estimator/",tag:"CLEANING",category:"Operations",tone:"mint",num:"16"},
+  {icon:"↗",name:"Travel Fee Calculator",desc:"Build a travel charge from distance, vehicle cost and paid time.",href:"/tools/travel-fee-calculator/",tag:"PRICING",category:"Pricing",tone:"blue",num:"17"},
+  {icon:"♙",name:"Staff Cost Calculator",desc:"Budget wages and employer on-costs for your service team.",href:"/tools/staff-cost-calculator/",tag:"OPERATIONS",category:"Operations",tone:"mint",num:"18"},
+  {icon:"％",name:"Discount Calculator",desc:"Calculate customer savings and the final discounted price.",href:"/tools/discount-calculator/",tag:"PRICING",category:"Pricing",tone:"peach",num:"19"},
+  {icon:"▤",name:"Sales Tax Calculator",desc:"Add tax to a price or extract tax already included in a total.",href:"/tools/sales-tax-calculator/",tag:"FINANCE",category:"Finance",tone:"blue",num:"20"},
+  {icon:"◎",name:"Payment Fee Calculator",desc:"Estimate processing fees and the net payment you receive.",href:"/tools/payment-fee-calculator/",tag:"FINANCE",category:"Finance",tone:"mint",num:"21"},
+  {icon:"◷",name:"Late Payment Fee Calculator",desc:"Estimate a simple prorated charge on an overdue invoice.",href:"/tools/late-payment-fee-calculator/",tag:"FINANCE",category:"Finance",tone:"peach",num:"22"},
+  {icon:"▦",name:"Weekly Job Capacity Planner",desc:"Estimate realistic weekly jobs from team hours and utilisation.",href:"/tools/weekly-job-capacity-planner/",tag:"PLANNING",category:"Operations",tone:"blue",num:"23"},
+  {icon:"✉",name:"Customer Review Request Generator",desc:"Create a polite, personalised message asking for honest feedback.",href:"/tools/review-request-generator/",tag:"MARKETING",category:"Growth",tone:"mint",num:"24"},
+  {icon:"☷",name:"Service Scope Builder",desc:"Select tasks and prepare a clear work scope for customers.",href:"/tools/service-scope-builder/",tag:"DOCUMENTS",category:"Documents",tone:"peach",num:"25"},
 ];
 
 const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations", "Growth"];
