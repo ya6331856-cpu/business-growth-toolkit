@@ -73,7 +73,7 @@ export default function Calculator({ mode }: { mode: Mode }) {
 
   const field=(label:string,value:string,set:(v:string)=>void,hint?:string,suffix?:string)=>(
     <label className="field"><span>{label}</span><div className="input-wrap">
-      <input type="number" min={label === "Number of workers" ? 1 : 0} step={label === "Number of workers" ? 1 : "any"} inputMode="decimal" value={value} onChange={e=>set(label === "Number of workers" ? String(Math.max(1,Math.floor(num(e.target.value,1)))) : e.target.value)}/>
+      <input type="number" aria-invalid={value.trim() === "" || !Number.isFinite(Number(value)) || Number(value) < (label === "Annual billable hours" ? Number.MIN_VALUE : 0)} min={label === "Number of workers" ? 1 : label === "Annual billable hours" ? "0.01" : 0} step={label === "Number of workers" ? 1 : "any"} inputMode="decimal" value={value} onChange={e=>set(label === "Number of workers" ? String(Math.max(1,Math.floor(num(e.target.value,1)))) : e.target.value)}/>
       {suffix&&<i>{suffix}</i>}
     </div>{hint&&<small>{hint}</small>}</label>
   );
