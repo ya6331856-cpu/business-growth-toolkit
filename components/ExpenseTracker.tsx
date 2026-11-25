@@ -1,0 +1,37 @@
+"use client";
+import { useEffect, useMemo, useState } from "react";
+type Entry={id:number;kind:"income"|"expense";description:string;category:string;amount:string;date:string};
+const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")};
+const value=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.max(0,n):0};
+const format=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(n)}catch{return c+" "+n.toFixed(2)}};
+const starter:Entry[]=[];
+export default function ExpenseTracker(){
+ const [entries,setEntries]=useState<Entry[]>(starter),[ready,setReady]=useState(false),[kind,setKind]=useState<"income"|"expense">("expense"),[description,setDescription]=useState(""),[category,setCategory]=useState("Supplies"),[amount,setAmount]=useState(""),[date,setDate]=useState(today),[currency,setCurrency]=useState("USD"),[month,setMonth]=useState(today().slice(0,7));
+ useEffect(()=>{try{const raw=window.localStorage.getItem("servicekitly-expense-entries-v1");if(raw){const parsed:unknown=JSON.parse(raw);if(Array.isArray(parsed))setEntries(parsed.filter((x):x is Entry=>x&&typeof x==="object"&&typeof x.id==="number"&&(x.kind==="income"||x.kind==="expense")&&typeof x.description==="string"&&typeof x.category==="string"&&typeof x.amount==="string"&&typeof x.date==="string"));}}catch{}setReady(true)},[]);
+ useEffect(()=>{if(ready){try{window.localStorage.setItem("servicekitly-expense-entries-v1",JSON.stringify(entries))}catch{}}},[entries,ready]);
+ const filtered=useMemo(()=>entries.filter(x=>x.date.startsWith(month)).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),[entries,month]);
+ const income=filtered.filter(x=>x.kind==="income").reduce((s,x)=>s+value(x.amount),0),expenses=filtered.filter(x=>x.kind==="expense").reduce((s,x)=>s+value(x.amount),0),net=income-expenses;
+ const add=(e:React.FormEvent<HTMLFormElement>)=>{e.preventDefault();if(!description.trim()||value(amount)<=0||!date)return;setEntries(xs=>[{id:Date.now()+Math.floor(Math.random()*1000),kind,description:description.trim(),category,amount:String(value(amount)),date},...xs]);setDescription("");setAmount("");};
+ const exportCsv=()=>{const rows=[["Date","Type","Description","Category","Amount","Currency"],...filtered.map(x=>[x.date,x.kind,x.description,x.category,x.amount,currency])];const csv=rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(",")).join("\r\n");const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="servicekitly-business-records-"+month+".csv";a.click();URL.revokeObjectURL(url)};
+ const categories=kind==="income"?["Service payment","Product sales","Other income"]:["Supplies","Travel","Equipment","Marketing","Rent","Software","Utilities","Payroll","Other expense"];
+ return <div className="tracker-tool">
+ <section className="tracker-summary panel"><div className="tracker-topline"><div><div className="panel-kicker"><span>✳</span> BUSINESS SNAPSHOT</div><h2>Monthly overview</h2></div><label className="field tracker-currency"><span>Currency</span><select value={currency} onChange={e=>setCurrency(e.target.value)}>{["USD","INR","GBP","EUR","CAD","AUD","AED"].map(x=><option key={x}>{x}</option>)}</select></label></div>
+ <label className="field tracker-month"><span>Reporting month</span><input type="month" value={month} onChange={e=>setMonth(e.target.value)}/></label>
+ <div className="tracker-metrics"><div><span>INCOME</span><b>{format(income,currency)}</b><small>{filtered.filter(x=>x.kind==="income").length} records</small></div><div><span>EXPENSES</span><b>{format(expenses,currency)}</b><small>{filtered.filter(x=>x.kind==="expense").length} records</small></div><div className={net<0?"is-negative":"is-positive"}><span>NET {net<0?"LOSS":"PROFIT"}</span><b>{format(net,currency)}</b><small>Income minus expenses</small></div></div>
+ <div className="tracker-progress"><div><span>Expense share of income</span><b>{income>0?Math.round(expenses/income*100)+"%":"—"}</b></div><div className="tracker-progress-track"><i style={{width:(income>0?Math.min(100,expenses/income*100):0)+"%"}}/></div><small>{income>0?"Shows expenses as a share of recorded income.":"Add income to see your expense ratio."}</small></div>
+ </section>
+ <div className="tracker-columns">
+ <form className="tracker-form panel" onSubmit={add}><div className="panel-kicker"><span>＋</span> ADD A RECORD</div><h2>Record a transaction</h2><div className="tracker-kind"><button type="button" className={kind==="expense"?"active expense":"expense"} onClick={()=>{setKind("expense");setCategory("Supplies")}}>− Expense</button><button type="button" className={kind==="income"?"active income":"income"} onClick={()=>{setKind("income");setCategory("Service payment")}}>＋ Income</button></div>
+ <label className="field"><span>Description</span><input required value={description} onChange={e=>setDescription(e.target.value)} placeholder="e.g. Cleaning supplies"/></label>
+ <div className="tracker-form-row"><label className="field"><span>Amount ({currency})</span><input required type="number" min="0.01" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="0.00"/></label><label className="field"><span>Date</span><input required type="date" value={date} onChange={e=>setDate(e.target.value)}/></label></div>
+ <label className="field"><span>Category</span><select value={category} onChange={e=>setCategory(e.target.value)}>{categories.map(x=><option key={x}>{x}</option>)}</select></label>
+ <button className="btn-primary tracker-submit" type="submit">Add {kind} <span>↗</span></button>
+ <p className="tracker-local-note">Records are saved in this browser on this device. Clearing browser data may erase them.</p>
+ </form>
+ <section className="tracker-records panel"><div className="tracker-record-head"><div><div className="panel-kicker"><span>▤</span> TRANSACTION LOG</div><h2>Recent records</h2></div><button type="button" className="invoice-add" onClick={exportCsv} disabled={!filtered.length}>↓ Export CSV</button></div>
+ {!filtered.length?<div className="tracker-empty"><span>＋</span><b>No records for this month yet</b><p>Add your first income or expense to start tracking your business cash flow.</p></div>:<div className="tracker-record-list">{filtered.map(x=><div className="tracker-record" key={x.id}><div className={"tracker-record-icon "+x.kind}>{x.kind==="income"?"↗":"↘"}</div><div className="tracker-record-main"><b>{x.description}</b><span>{x.category} · {x.date}</span></div><strong className={x.kind}>{x.kind==="income"?"+":"−"}{format(value(x.amount),currency)}</strong><button type="button" aria-label={"Delete "+x.description} title="Delete record" onClick={()=>setEntries(xs=>xs.filter(y=>y.id!==x.id))}>×</button></div>)}</div>}
+ <div className="tracker-record-foot"><span>{filtered.length} transactions in this month</span><button type="button" onClick={()=>{if(window.confirm("Delete all records for this month? This cannot be undone."))setEntries(xs=>xs.filter(x=>!x.date.startsWith(month)))}} disabled={!filtered.length}>Clear month</button></div>
+ </section></div>
+ <p className="tracker-disclaimer">This is a simple record-keeping tool, not accounting or tax software. Keep separate backups and confirm figures against bank statements and official records.</p>
+ </div>;
+}
