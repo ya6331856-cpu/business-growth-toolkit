@@ -20,7 +20,7 @@ export default function ReceiptGenerator(){
  <label className="field"><span>Payment for</span><input value={description} onChange={e=>setDescription(e.target.value)} placeholder="Describe the product or service"/></label>
  <label className="field"><span>Amount received ({currency})</span><input type="number" min="0.01" step="0.01" required value={amount} onChange={e=>setAmount(e.target.value)}/></label>
  <label className="field"><span>Additional note</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
- <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={paid<=0}>Print / Save PDF <span>↗</span></button><span>This creates a receipt document only; it does not process payments.</span></div>
+ <div className="invoice-actions">{paid>0&&paid<0.01&&<p className="field-error" role="alert">Enter an amount of at least 0.01 to create a receipt.</p>}<button type="button" className="btn-primary" onClick={()=>window.print()} disabled={paid<0.01}>Print / Save PDF <span>↗</span></button><span>This creates a receipt document only; it does not process payments.</span></div>
  </section>
  <section className="receipt-preview panel" aria-live="polite"><div className="invoice-preview-label">LIVE RECEIPT PREVIEW <span>● UPDATING</span></div>
  <div className="receipt-paper"><div className="receipt-paid-stamp">PAYMENT<br/>RECEIVED</div>
