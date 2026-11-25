@@ -3,7 +3,9 @@ import {useEffect,useMemo,useState} from "react";
 type Entry={id:number;kind:"income"|"expense";description:string;category:string;amount:string;date:string;currency?:string};
 const currentMonth=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
 const money=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(n)}catch{return c+" "+n.toFixed(2)}};
-const amountValue=(raw:string)=>{const value=Number(raw);return Number.isFinite(value)?Math.max(0,value):0};
+const LIMIT=1_000_000_000_000;
+const amountValue=(raw:string)=>{const value=Number(raw);return Number.isFinite(value)?Math.min(LIMIT,Math.max(0,value)):0};
+const boundedTotal=(values:number[])=>Math.min(LIMIT,values.reduce((sum,value)=>sum+value,0));
 export default function ProfitLossStatement(){
  const [entries,setEntries]=useState<Entry[]>([]),[month,setMonth]=useState(currentMonth),[currency,setCurrency]=useState("USD"),[business,setBusiness]=useState("Your Business Name"),[preparedBy,setPreparedBy]=useState("");
  useEffect(()=>{const load=()=>{try{const raw=localStorage.getItem("servicekitly-expense-entries-v1");if(raw){const data:unknown=JSON.parse(raw);if(Array.isArray(data))setEntries(data.filter((x):x is Entry=>x&&typeof x==="object"&&(x.kind==="income"||x.kind==="expense")&&typeof x.amount==="string"&&typeof x.date==="string"&&typeof x.category==="string"&&typeof x.description==="string"&&typeof x.id==="number"));else setEntries([]);}else setEntries([]);}catch{setEntries([]);}};load();window.addEventListener("focus",load);window.addEventListener("storage",load);window.addEventListener("servicekitly:records-updated",load);return()=>{window.removeEventListener("focus",load);window.removeEventListener("storage",load);window.removeEventListener("servicekitly:records-updated",load);};},[]);
@@ -11,9 +13,9 @@ export default function ProfitLossStatement(){
  const rows=monthRows.filter(x=>x.currency===currency);
  const legacyCount=monthRows.filter(x=>!x.currency).length;
  const otherCurrencyCount=monthRows.filter(x=>x.currency&&x.currency!==currency).length;
- const sum=(kind:"income"|"expense")=>rows.filter(x=>x.kind===kind).reduce((n,x)=>n+amountValue(x.amount),0);
+ const sum=(kind:"income"|"expense")=>boundedTotal(rows.filter(x=>x.kind===kind).map(x=>amountValue(x.amount)));
  const income=sum("income"),expenses=sum("expense"),profit=income-expenses;
- const grouped=(kind:"income"|"expense")=>Object.entries(rows.filter(x=>x.kind===kind).reduce<Record<string,number>>((acc,x)=>{acc[x.category]=(acc[x.category]||0)+amountValue(x.amount);return acc},{})).sort((a,b)=>b[1]-a[1]);
+ const grouped=(kind:"income"|"expense")=>Object.entries(rows.filter(x=>x.kind===kind).reduce<Record<string,number>>((acc,x)=>{acc[x.category]=Math.min(LIMIT,(acc[x.category]||0)+amountValue(x.amount));return acc},{})).sort((a,b)=>b[1]-a[1]);
  const incomeGroups=grouped("income"),expenseGroups=grouped("expense");
  const print=()=>window.print();
  return <div className="pl-tool"><section className="pl-controls panel"><div className="panel-kicker"><span>✳</span> REPORT SETTINGS</div><h2>Prepare your statement</h2><div className="pl-control-grid"><label className="field"><span>Business name</span><input value={business} onChange={e=>setBusiness(e.target.value)} placeholder="Your business"/></label><label className="field"><span>Reporting month</span><input type="month" value={month} onChange={e=>setMonth(e.target.value)}/></label><label className="field"><span>Currency</span><select value={currency} onChange={e=>setCurrency(e.target.value)}>{["USD","INR","GBP","EUR","CAD","AUD","AED"].map(x=><option key={x}>{x}</option>)}</select></label><label className="field"><span>Prepared by (optional)</span><input value={preparedBy} onChange={e=>setPreparedBy(e.target.value)} placeholder="Name"/></label></div><div className="pl-control-actions"><p>Uses the records saved by your ServiceKitly Expense Tracker in this browser. Only records in the selected currency are included.</p><button className="btn-primary" type="button" onClick={print}>Print / Save PDF <span>↗</span></button></div></section>
