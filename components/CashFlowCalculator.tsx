@@ -1,12 +1,12 @@
 "use client";
 import {useMemo,useState} from "react";
 const money=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(n)}catch{return c+" "+n.toFixed(2)}};
-const safe=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.max(0,n):0};
+const LIMIT=1_000_000_000_000;\nconst safe=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.min(LIMIT,Math.max(0,n)):0};\nconst bounded=(n:number)=>Math.min(LIMIT,Math.max(-LIMIT,n));\nconst total=(...values:number[])=>Math.min(LIMIT,values.reduce((sum,value)=>sum+value,0));
 export default function CashFlowCalculator(){
  const [currency,setCurrency]=useState("USD"),[month,setMonth]=useState(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")});
  const [opening,setOpening]=useState("5000"),[customer,setCustomer]=useState("12000"),[otherIn,setOtherIn]=useState("0"),[operating,setOperating]=useState("4500"),[payroll,setPayroll]=useState("3000"),[debt,setDebt]=useState("500"),[owner,setOwner]=useState("0"),[otherOut,setOtherOut]=useState("0");
- const result=useMemo(()=>{const start=safe(opening),inflow=safe(customer)+safe(otherIn),outflow=safe(operating)+safe(payroll)+safe(debt)+safe(owner)+safe(otherOut),net=inflow-outflow;return {start,inflow,outflow,net,end:start+net}},[opening,customer,otherIn,operating,payroll,debt,owner,otherOut]);
- const field=(label:string,value:string,set:(s:string)=>void)=><label className="field"><span>{label}</span><div className="input-wrap"><input type="number" min="0" step="0.01" inputMode="decimal" value={value} onChange={e=>set(e.target.value)}/><i>{currency}</i></div></label>;
+ const result=useMemo(()=>{const start=safe(opening),inflow=total(safe(customer),safe(otherIn)),outflow=total(safe(operating),safe(payroll),safe(debt),safe(owner),safe(otherOut)),net=bounded(inflow-outflow);return {start,inflow,outflow,net,end:bounded(start+net)}},[opening,customer,otherIn,operating,payroll,debt,owner,otherOut]);
+ const field=(label:string,value:string,set:(s:string)=>void)=><label className="field"><span>{label}</span><div className="input-wrap"><input type="number" min="0" max={LIMIT} step="0.01" inputMode="decimal" value={value} onChange={e=>set(e.target.value)}/><i>{currency}</i></div></label>;
  const print=()=>window.print();
  return <div className="cash-tool"><section className="cash-inputs panel"><div className="panel-kicker"><span>✳</span> CASH FLOW INPUTS</div><h2>Enter your cash movements</h2><p className="panel-intro">Use the amounts you expect to actually receive or pay during this period.</p><div className="cash-meta"><label className="field"><span>Reporting month</span><input type="month" value={month} onChange={e=>setMonth(e.target.value)}/></label><label className="field"><span>Currency</span><select value={currency} onChange={e=>setCurrency(e.target.value)}>{["USD","INR","GBP","EUR","CAD","AUD","AED"].map(x=><option key={x}>{x}</option>)}</select></label></div>
  <div className="cash-field-section"><h3><span>01</span> Opening cash</h3>{field("Cash available at the start of the month",opening,setOpening)}</div>
