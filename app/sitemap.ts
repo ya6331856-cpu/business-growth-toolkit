@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/tools/quotation-generator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/receipt-generator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/expense-tracker/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/profit-loss-statement/", priority: 0.8, frequency: "monthly" as const },
     { path: "/about/", priority: 0.5, frequency: "yearly" as const },
     { path: "/privacy/", priority: 0.3, frequency: "yearly" as const },
     { path: "/terms/", priority: 0.3, frequency: "yearly" as const }
