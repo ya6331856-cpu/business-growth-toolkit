@@ -1,4 +1,22 @@
-import type { Metadata } from "next";import Link from "next/link";
-export const metadata:Metadata={title:"Free Business Tools for Service Professionals",description:"Browse practical free calculators for cleaning businesses and independent service providers."};
-const tools=[{icon:"✦",name:"House Cleaning Price Calculator",desc:"Build a profitable quote from labour, supplies, travel and your target margin.",href:"/tools/house-cleaning-price-calculator/",tag:"CLEANING",tone:"mint",num:"01"},{icon:"↗",name:"Profit Margin Calculator",desc:"See how much profit remains after costs and understand your margin.",href:"/tools/profit-margin-calculator/",tag:"FINANCE",tone:"peach",num:"02"},{icon:"◷",name:"Hourly Rate Calculator",desc:"Set a sustainable hourly rate around your income and real working capacity.",href:"/tools/hourly-rate-calculator/",tag:"PRICING",tone:"blue",num:"03"}];
-export default function Tools(){return <><section className="page-hero"><span className="eyebrow"><i/> THE SERVICEKITLY TOOLKIT</span><h1>Useful tools for <em>better business.</em></h1><p>Less guesswork, more clarity. Pick a tool, enter your numbers and get a practical result in seconds.</p></section><section className="section directory-grid"><div className="directory-banner"><div><span className="section-kicker">START HERE</span><h2>Make your next decision a smarter one.</h2><p>Free tools. Clear calculations. No account needed.</p></div><span style={{fontSize:48,opacity:.75}}>✳</span></div><div className="tool-grid">{tools.map(t=><Link className="tool-card tool-card-v2" href={t.href} key={t.href}><div className="tool-card-top"><span className={"tool-icon "+t.tone}>{t.icon}</span><span className="tool-number">{t.num}</span></div><span className="tool-tag">{t.tag}</span><h3>{t.name}</h3><p>{t.desc}</p><div className="card-bottom"><span>Open tool</span><b>↗</b></div></Link>)}</div></section></>}
+import type { Metadata } from "next";
+import ToolDirectory from "@/components/ToolDirectory";
+
+export const metadata: Metadata = {
+  title: "Free Business Tools for Service Professionals",
+  description: "Browse free pricing, profit, document and planning tools for service businesses and independent professionals.",
+  alternates: { canonical: "/tools/" }
+};
+
+export default function Tools() {
+  return <>
+    <section className="page-hero directory-hero">
+      <span className="eyebrow"><i/> THE SERVICEKITLY TOOLKIT</span>
+      <h1>Find the right tool.<br/><em>Get back to work.</em></h1>
+      <p>Practical calculators and business documents for the decisions behind every job. Search by task or explore a category.</p>
+    </section>
+    <section className="section directory-grid">
+      <div className="directory-banner"><div><span className="section-kicker">BUILT AROUND YOUR WORK</span><h2>Less admin. More clarity.</h2><p>11 useful tools · Free to use · No account needed</p></div><span aria-hidden="true" className="directory-banner-mark">✳</span></div>
+      <ToolDirectory />
+    </section>
+  </>;
+}

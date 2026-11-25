@@ -1,1 +1,15 @@
-import type {MetadataRoute} from "next";export default function robots():MetadataRoute.Robots{return {rules:{userAgent:"*",allow:"/"},sitemap:"https://servicekitly.com/sitemap.xml"};}
+import type { MetadataRoute } from "next";
+import { getProductionSiteUrl } from "@/lib/site-url";
+
+export default function robots(): MetadataRoute.Robots {
+  const productionSiteUrl = getProductionSiteUrl();
+
+  if (!productionSiteUrl) {
+    return { rules: { userAgent: "*", allow: "/" } };
+  }
+
+  return {
+    rules: { userAgent: "*", allow: "/" },
+    sitemap: `${productionSiteUrl}/sitemap.xml`
+  };
+}

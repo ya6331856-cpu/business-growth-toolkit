@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+import InvoiceGenerator from "@/components/InvoiceGenerator";
+export const metadata: Metadata = {
+  title: "Free Invoice Generator for Small Businesses",
+  description: "Create a professional invoice with line items, tax and totals. Preview it instantly and print or save it as a PDF. No signup required.",
+  alternates: { canonical: "/tools/invoice-generator/" }
+};
+export default function InvoicePage() {
+  return <><section className="page-hero"><span className="eyebrow">BUSINESS DOCUMENT TOOL</span><h1>Free Invoice Generator</h1><p>Create a clear invoice for your service or product business. Add customer details, line items, tax and payment notes, then print or save the finished invoice as a PDF.</p></section><InvoiceGenerator/><section className="content-section"><h2>How to create an invoice</h2><p>Enter your business and customer details, choose a currency, add each product or service as a separate line and enter the quantity and rate. The invoice preview calculates line totals, tax and the amount due automatically.</p><h2>What should an invoice include?</h2><p>A useful invoice usually includes the seller’s business name and contact details, customer name, a unique invoice number, issue and due dates, a clear description of goods or services, quantities, rates, applicable taxes and payment terms. Local invoice rules differ, so check the requirements where your business operates.</p><h2>Frequently asked questions</h2><div className="faq"><h3>Can I save the invoice as a PDF?</h3><p>Yes. Select Print / Save PDF and choose “Save as PDF” in your browser’s print dialog.</p></div><div className="faq"><h3>Does this tool send my invoice to a server?</h3><p>No. The invoice preview and calculations run in your browser. This tool does not include an account, online payment or email-sending feature.</p></div><div className="faq"><h3>Does it calculate taxes for my country?</h3><p>You enter the tax rate yourself. The tool does not determine tax rates or confirm tax compliance. Verify the correct rate and invoice format for your location.</p></div></section></>;
+}
