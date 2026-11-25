@@ -10,7 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/tools/break-even-calculator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/markup-calculator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/about/", priority: 0.5, frequency: "yearly" as const },
-    { path: "/privacy/", priority: 0.3, frequency: "yearly" as const }
+    { path: "/privacy/", priority: 0.3, frequency: "yearly" as const },
+    { path: "/terms/", priority: 0.3, frequency: "yearly" as const }
   ];
   return pages.map(page => ({ url: base + page.path, changeFrequency: page.frequency, priority: page.priority }));
 }

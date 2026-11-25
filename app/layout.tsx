@@ -14,6 +14,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return <html lang="en"><body>
     <header className="site-header"><a className="brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><nav><a href="/tools/">Tools</a><a href="/about/">About</a></nav><a className="header-cta" href="/tools/">Explore tools <span>↗</span></a></header>
     <main>{children}</main>
-    <footer className="footer"><div><a className="brand footer-brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><p>Practical tools for people who run service businesses.</p></div><div className="footer-links"><a href="/tools/">All tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a></div><small>© {new Date().getFullYear()} ServiceKitly. Check local tax and legal requirements before relying on estimates.</small></footer>
+    <footer className="footer"><div><a className="brand footer-brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><p>Practical tools for people who run service businesses.</p></div><div className="footer-links"><a href="/tools/">All tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div><small>© {new Date().getFullYear()} ServiceKitly. Check local tax and legal requirements before relying on estimates.</small></footer>
   </body></html>;
 }
