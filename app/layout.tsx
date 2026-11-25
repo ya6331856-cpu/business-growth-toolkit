@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { getProductionSiteUrl } from "@/lib/site-url";
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "");
 const productionSiteUrl = process.env.VERCEL_ENV === "production" && configuredSiteUrl?.startsWith("https://") ? configuredSiteUrl : undefined;
