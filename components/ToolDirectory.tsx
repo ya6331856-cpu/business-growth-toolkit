@@ -34,6 +34,11 @@ const toolItems: ToolItem[] = [
   {icon:"▦",name:"Weekly Job Capacity Planner",desc:"Estimate realistic weekly jobs from team hours and utilisation.",href:"/tools/weekly-job-capacity-planner/",tag:"PLANNING",category:"Operations",tone:"blue",num:"23"},
   {icon:"✉",name:"Customer Review Request Generator",desc:"Create a polite, personalised message asking for honest feedback.",href:"/tools/review-request-generator/",tag:"MARKETING",category:"Growth",tone:"mint",num:"24"},
   {icon:"☷",name:"Service Scope Builder",desc:"Select tasks and prepare a clear work scope for customers.",href:"/tools/service-scope-builder/",tag:"DOCUMENTS",category:"Documents",tone:"peach",num:"25"},
+  {icon:"◉",name:"Booking Deposit Calculator",desc:"Calculate a booking deposit and the remaining customer balance.",href:"/tools/booking-deposit-calculator/",tag:"PRICING",category:"Pricing",tone:"mint",num:"26"},
+  {icon:"♧",name:"Customer Lifetime Value Calculator",desc:"Estimate customer revenue and gross profit over a relationship.",href:"/tools/customer-lifetime-value-calculator/",tag:"GROWTH",category:"Growth",tone:"blue",num:"27"},
+  {icon:"×",name:"Cancellation Fee Calculator",desc:"Model a disclosed cancellation charge from your booking policy.",href:"/tools/cancellation-fee-calculator/",tag:"OPERATIONS",category:"Operations",tone:"peach",num:"28"},
+  {icon:"✉",name:"Quote Follow-up Message Generator",desc:"Write a polite follow-up for an outstanding customer quote.",href:"/tools/quote-follow-up-generator/",tag:"MARKETING",category:"Growth",tone:"mint",num:"29"},
+  {icon:"◷",name:"Workday Schedule Planner",desc:"Plan job time after breaks and travel are accounted for.",href:"/tools/workday-schedule-planner/",tag:"PLANNING",category:"Operations",tone:"blue",num:"30"},
 ];
 
 const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations", "Growth"];
