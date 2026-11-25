@@ -15,7 +15,7 @@ export default function Tools() {
       <p>Practical calculators and business documents for the decisions behind every job. Search by task or explore a category.</p>
     </section>
     <section className="section directory-grid">
-      <div className="directory-banner"><div><span className="section-kicker">BUILT AROUND YOUR WORK</span><h2>Less admin. More clarity.</h2><p>14 useful tools · Free to use · No account needed</p></div><span aria-hidden="true" className="directory-banner-mark">✳</span></div>
+      <div className="directory-banner"><div><span className="section-kicker">BUILT AROUND YOUR WORK</span><h2>Less admin. More clarity.</h2><p>25 useful tools · Free to use · No account needed</p></div><span aria-hidden="true" className="directory-banner-mark">✳</span></div>
       <ToolDirectory />
     </section>
   </>;
