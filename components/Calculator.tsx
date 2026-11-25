@@ -29,6 +29,20 @@ export default function Calculator({ mode }: { mode: Mode }) {
     try { return new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 2 }).format(value); }
     catch { return currency + " " + value.toFixed(2); }
   };
+  const validNonNegative = (value: string) => value.trim() !== "" && Number.isFinite(Number(value)) && Number(value) >= 0;
+  const activeInputs = mode === "cleaning"
+    ? [hours, workers, wage, supplies, travel, margin]
+    : mode === "margin"
+      ? [revenue, cost]
+      : mode === "hourly"
+        ? [income, expenses, billable, buffer]
+        : mode === "breakeven"
+          ? [fixedCosts, unitPrice, variableCost]
+          : [unitCost, markup];
+  const invalidInputs = activeInputs.some((value) => !validNonNegative(value)) ||
+    (mode === "hourly" && Number(billable) <= 0) ||
+    (mode === "cleaning" && (!Number.isInteger(Number(workers)) || Number(workers) < 1));
+
   const result = useMemo(() => {
     if (mode === "cleaning") {
       const labour = bounded(Math.max(0,num(hours)) * Math.max(1,Math.floor(num(workers,1))) * Math.max(0,num(wage)));
@@ -43,9 +57,9 @@ export default function Calculator({ mode }: { mode: Mode }) {
       return { main:sales>0?percentage:Number.NaN,cost:totalCost,profit,detail:"Profit margin",percent:Number.isFinite(percentage)?Math.max(0,Math.min(100,percentage)):0 };
     }
     if (mode === "hourly") {
-      const billableHours=Math.max(1,num(billable,1));
+      const billableHours=Number(billable);
       const annualTarget=bounded((Math.max(0,num(income))+Math.max(0,num(expenses)))*(1+Math.max(0,num(buffer))/100));
-      return { main:bounded(annualTarget/billableHours),cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
+      return { main:billableHours>0?bounded(annualTarget/billableHours):Number.NaN,cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
     }
     if (mode === "breakeven") {
       const fixed=Math.max(0,num(fixedCosts)), price=Math.max(0,num(unitPrice)), variable=Math.max(0,num(variableCost));
@@ -92,7 +106,7 @@ export default function Calculator({ mode }: { mode: Mode }) {
       <h2>{mode==="cleaning"?"Your suggested quote":mode==="margin"?"Your profit margin":mode==="hourly"?"Your hourly target":mode==="breakeven"?"Your break-even point":"Your suggested price"}</h2>
       <div className="result-caption">{result.detail}</div>
       <div className="result-value">{mode==="margin"?(Number.isFinite(result.main)?result.main.toFixed(1)+"%":"N/A"):mode==="breakeven"?(Number.isFinite(result.main)?Math.ceil(result.main).toLocaleString()+" units":"Not achievable"):formatMoney(result.main)}</div>
-      {mode!=="hourly"&&mode!=="breakeven"&&<div className="result-progress" aria-label={"Indicator "+result.percent.toFixed(0)+" percent"}><div style={{width:result.percent+"%"}}/></div>}
+      {!invalidInputs&&mode!=="hourly"&&mode!=="breakeven"&&<div className="result-progress" aria-label={"Indicator "+result.percent.toFixed(0)+" percent"}><div style={{width:result.percent+"%"}}/></div>}
       {mode==="cleaning"&&<><div className="result-line"><span>Estimated direct cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Estimated gross profit</span><strong>{formatMoney(result.profit)}</strong></div></>}
       {mode==="margin"&&<><div className="result-line"><span>Revenue</span><strong>{formatMoney(Math.max(0,num(revenue)))}</strong></div><div className="result-line"><span>Profit / loss</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Total cost</span><strong>{formatMoney(result.cost)}</strong></div></>}
       {mode==="hourly"&&<><div className="result-line"><span>Annual billable hours</span><strong>{Math.max(1,num(billable,1)).toLocaleString()}</strong></div><div className="result-line"><span>Annual revenue target</span><strong>{formatMoney(result.profit)}</strong></div></>}
