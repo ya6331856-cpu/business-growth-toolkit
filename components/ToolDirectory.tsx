@@ -36,12 +36,12 @@ export default function ToolDirectory() {
   return (
     <section className="directory-shell">
       <div className="directory-toolbar">
-        <label className="directory-search">
+        <div className="directory-search" role="search">
           <span aria-hidden="true">⌕</span>
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search calculators, invoices, expenses…" aria-label="Search business tools" />
+          <input aria-label="Search business tools" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search calculators, invoices, expenses…" />
           {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search">×</button>}
-        </label>
-        <span className="directory-count">{filtered.length} {filtered.length === 1 ? "tool" : "tools"}</span>
+        </div>
+        <span className="directory-count" aria-live="polite">{filtered.length} {filtered.length === 1 ? "tool" : "tools"}</span>
       </div>
       <div className="directory-filters" role="group" aria-label="Filter tools by category">
         {categories.map((item) => <button key={item} type="button" className={category === item ? "filter-chip active" : "filter-chip"} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>)}
