@@ -5,7 +5,8 @@ const MAX_AMOUNT=1_000_000_000_000;
 const num=(v:string)=>{const n=Number(v);return Number.isFinite(n)?Math.min(MAX_AMOUNT,Math.max(0,n)):0};
 export default function ReceiptGenerator(){
  const [business,setBusiness]=useState("Your Business Name"),[email,setEmail]=useState(""),[customer,setCustomer]=useState(""),[receiptNo,setReceiptNo]=useState("RCPT-001"),[date,setDate]=useState(()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}),[currency,setCurrency]=useState("USD"),[method,setMethod]=useState("Bank transfer"),[reference,setReference]=useState(""),[description,setDescription]=useState("Payment for services rendered"),[amount,setAmount]=useState("250"),[notes,setNotes]=useState("Thank you for your payment.");
- const paid=num(amount);\n const amountInvalid=amount.trim()===""||!Number.isFinite(Number(amount))||Number(amount)<0.01||Number(amount)>MAX_AMOUNT;
+ const paid=num(amount);
+ const amountInvalid=amount.trim()===""||!Number.isFinite(Number(amount))||Number(amount)<0.01||Number(amount)>MAX_AMOUNT;
  return <div className="receipt-tool">
  <section className="receipt-editor panel"><div className="panel-kicker"><span>✳</span> PAYMENT DETAILS</div><h2>Create a payment receipt</h2><p className="panel-intro">Record the payment details and preview a clean receipt ready to print or save.</p>
  <div className="invoice-field-grid">
