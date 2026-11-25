@@ -31,6 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/tools/weekly-job-capacity-planner/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/review-request-generator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/service-scope-builder/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/booking-deposit-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/customer-lifetime-value-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/cancellation-fee-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/quote-follow-up-generator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/workday-schedule-planner/", priority: 0.8, frequency: "monthly" as const },
     { path: "/about/", priority: 0.5, frequency: "yearly" as const },
     { path: "/privacy/", priority: 0.3, frequency: "yearly" as const },
     { path: "/terms/", priority: 0.3, frequency: "yearly" as const }
