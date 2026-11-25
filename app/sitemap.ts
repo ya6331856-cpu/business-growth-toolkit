@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://servicekitly.com";
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\\/+$/, "");
+  const base = process.env.VERCEL_ENV === "production" && configuredSiteUrl?.startsWith("https://") ? configuredSiteUrl : undefined;
+  if (!base) return [];
   const pages = [
     { path: "/", priority: 1, frequency: "weekly" as const },
     { path: "/tools/", priority: 0.9, frequency: "weekly" as const },
