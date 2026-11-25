@@ -13,7 +13,7 @@ export default function InvoiceGenerator() {
   const [email, setEmail] = useState("");
   const [client, setClient] = useState("");
   const [invoiceNo, setInvoiceNo] = useState("INV-001");
-  const [issueDate, setIssueDate] = useState(new Date().toISOString().slice(0, 10));
+  const [issueDate, setIssueDate] = useState((() => { const d = new Date(); return [d.getFullYear(), String(d.getMonth()+1).padStart(2,"0"), String(d.getDate()).padStart(2,"0")].join("-"); })());
   const [dueDate, setDueDate] = useState("");
   const [currency, setCurrency] = useState("USD");
   const [taxRate, setTaxRate] = useState("0");
