@@ -18,7 +18,7 @@ export default function ReceiptGenerator(){
  <label className="field"><span>Transaction reference (optional)</span><input value={reference} onChange={e=>setReference(e.target.value)} placeholder="Transaction ID / cheque no."/></label>
  </div>
  <label className="field"><span>Payment for</span><input value={description} onChange={e=>setDescription(e.target.value)} placeholder="Describe the product or service"/></label>
- <label className="field"><span>Amount received ({currency})</span><input type="number" min="0" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)}/></label>
+ <label className="field"><span>Amount received ({currency})</span><input type="number" min="0.01" step="0.01" required value={amount} onChange={e=>setAmount(e.target.value)}/></label>
  <label className="field"><span>Additional note</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
  <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()}>Print / Save PDF <span>↗</span></button><span>This creates a receipt document only; it does not process payments.</span></div>
  </section>
@@ -27,7 +27,7 @@ export default function ReceiptGenerator(){
  <div className="receipt-paper-head"><div className="invoice-brand-mark">S</div><h2>{business||"Your Business Name"}</h2>{email&&<p>{email}</p>}</div>
  <div className="receipt-heading"><small>PAYMENT RECEIPT</small><strong>{receiptNo||"—"}</strong></div>
  <div className="receipt-amount"><small>AMOUNT RECEIVED</small><strong>{fmt(paid,currency)}</strong></div>
- <div className="receipt-details"><div><span>Received from</span><b>{customer||"Customer name"}</b></div><div><span>Payment date</span><b>{date||"—"}</b></div><div><span>Payment method</span><b>{method}</b></div><div><span>Reference</span><b>{reference||"Not provided"}</b></div><div><span>Payment for</span><b>{description||"—"}</b></div><div><span>Status</span><b className="receipt-status">Paid in full</b></div></div>
+ <div className="receipt-details"><div><span>Received from</span><b>{customer||"Customer name"}</b></div><div><span>Payment date</span><b>{date||"—"}</b></div><div><span>Payment method</span><b>{method}</b></div><div><span>Reference</span><b>{reference||"Not provided"}</b></div><div><span>Payment for</span><b>{description||"—"}</b></div><div><span>Status</span><b className="receipt-status">Payment received</b></div></div>
  <div className="receipt-note"><small>NOTE</small><p>{notes||"—"}</p></div><div className="receipt-thanks">Thank you for your business.</div>
  </div><p className="invoice-privacy-note">Receipt details are handled in this browser. Keep your original payment records and verify the payment before issuing a receipt.</p>
  </section></div>;
