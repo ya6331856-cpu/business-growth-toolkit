@@ -30,4 +30,8 @@ npm run build
 
 Calculators provide planning estimates, not financial, tax, legal or accounting advice. Review local market and regulatory requirements and include all relevant business costs before relying on a result.
 
-The canonical domain is temporarily configured as https://servicekitly.com. Update `metadataBase`, sitemap and robots if another domain is chosen. Do not submit the sitemap to search engines until the final domain is connected and the site is deployed.
+## Production domain and indexing
+
+Set `NEXT_PUBLIC_SITE_URL` in the Vercel **Production** environment to the final HTTPS domain (for example, `https://www.example.com`) before the production deployment. The layout metadata, canonical URL base, sitemap and robots file read this value automatically. Preview deployments and deployments without a valid production URL are marked `noindex`, disallow crawling and return an empty sitemap to avoid indexing preview URLs or an unowned domain.
+
+After connecting the final domain, set the environment variable, redeploy once, and verify the homepage, `/robots.txt`, `/sitemap.xml` and canonical URLs before submitting the sitemap to Google Search Console.
