@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\\/+$/, "");
+const productionSiteUrl = process.env.VERCEL_ENV === "production" && configuredSiteUrl?.startsWith("https://") ? configuredSiteUrl : undefined;
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://servicekitly.com"),
+  ...(productionSiteUrl ? { metadataBase: new URL(productionSiteUrl) } : {}),
   title: { default: "ServiceKitly — Tools to Run a Better Service Business", template: "%s | ServiceKitly" },
   description: "Free practical calculators and business tools for cleaning companies, home-service pros and independent service providers. Price jobs, protect profit and create better quotes.",
   applicationName: "ServiceKitly",
-  robots: { index: true, follow: true },
+  robots: productionSiteUrl ? { index: true, follow: true } : { index: false, follow: false },
   openGraph: { type: "website", siteName: "ServiceKitly", title: "ServiceKitly — Tools to Run a Better Service Business", description: "Price jobs confidently, protect your margins and win more work." }
 };
 
