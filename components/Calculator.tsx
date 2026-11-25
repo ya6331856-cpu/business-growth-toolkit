@@ -8,9 +8,11 @@ const currencies = [
   { code: "CAD", label: "CAD — Canadian Dollar" }, { code: "AUD", label: "AUD — Australian Dollar" },
   { code: "AED", label: "AED — UAE Dirham" }
 ];
+const MAX_AMOUNT = 1_000_000_000_000;
+const bounded = (value: number) => Number.isFinite(value) ? Math.min(MAX_AMOUNT, Math.max(-MAX_AMOUNT, value)) : 0;
 const num = (value: string, fallback = 0) => {
   const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
+  return Number.isFinite(parsed) ? Math.min(MAX_AMOUNT, Math.max(-MAX_AMOUNT, parsed)) : fallback;
 };
 export default function Calculator({ mode }: { mode: Mode }) {
   const [currency, setCurrency] = useState("USD");
@@ -29,10 +31,10 @@ export default function Calculator({ mode }: { mode: Mode }) {
   };
   const result = useMemo(() => {
     if (mode === "cleaning") {
-      const labour = Math.max(0,num(hours)) * Math.max(1,Math.floor(num(workers,1))) * Math.max(0,num(wage));
-      const direct = labour + Math.max(0,num(supplies)) + Math.max(0,num(travel));
+      const labour = bounded(Math.max(0,num(hours)) * Math.max(1,Math.floor(num(workers,1))) * Math.max(0,num(wage)));
+      const direct = bounded(labour + Math.max(0,num(supplies)) + Math.max(0,num(travel)));
       const targetMargin = Math.min(90,Math.max(0,num(margin))) / 100;
-      const suggested = direct / (1-targetMargin);
+      const suggested = bounded(direct / (1-targetMargin));
       return { main:suggested, cost:direct, profit:suggested-direct, detail:"Suggested job price", percent:targetMargin*100 };
     }
     if (mode === "margin") {
@@ -42,16 +44,16 @@ export default function Calculator({ mode }: { mode: Mode }) {
     }
     if (mode === "hourly") {
       const billableHours=Math.max(1,num(billable,1));
-      const annualTarget=(Math.max(0,num(income))+Math.max(0,num(expenses)))*(1+Math.max(0,num(buffer))/100);
-      return { main:annualTarget/billableHours,cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
+      const annualTarget=bounded((Math.max(0,num(income))+Math.max(0,num(expenses)))*(1+Math.max(0,num(buffer))/100));
+      return { main:bounded(annualTarget/billableHours),cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
     }
     if (mode === "breakeven") {
       const fixed=Math.max(0,num(fixedCosts)), price=Math.max(0,num(unitPrice)), variable=Math.max(0,num(variableCost));
       const contribution=price-variable;
-      return { main:fixed<=0?0:contribution>0?fixed/contribution:Infinity,cost:fixed,profit:contribution,detail:"Units needed to break even",percent:0 };
+      return { main:fixed<=0?0:contribution>0?bounded(fixed/contribution):Infinity,cost:fixed,profit:contribution,detail:"Units needed to break even",percent:0 };
     }
     const base=Math.max(0,num(unitCost)), rate=Math.max(0,num(markup))/100;
-    const selling=base*(1+rate);
+    const selling=bounded(base*(1+rate));
     return { main:selling,cost:base,profit:selling-base,detail:"Suggested selling price",percent:Math.min(100,Math.max(0,rate*100)) };
   },[mode,hours,workers,wage,supplies,travel,margin,revenue,cost,income,expenses,billable,buffer,fixedCosts,unitPrice,variableCost,unitCost,markup]);
 
