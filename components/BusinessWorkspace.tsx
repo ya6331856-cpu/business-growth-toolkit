@@ -62,7 +62,7 @@ export default function BusinessWorkspace() {
     setJobs(current => current.map(job => job.id === id ? { ...job, status } : job));
   }
 
-  function exportJobs() {\n    const quote = (value: string) => `"${value.replaceAll('"', '""')}"`;\n    const rows = [["Customer","Email","Phone","Service","Amount USD","Status","Created"], ...jobs.map(job => [job.customer, job.email ?? "", job.phone ?? "", job.service, String(job.amount), job.status, job.createdAt])];\n    const csv = rows.map(row => row.map(quote).join(",")).join("\\r\\n");\n    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));\n    const link = document.createElement("a"); link.href = url; link.download = "servicekitly-jobs.csv"; link.click(); URL.revokeObjectURL(url);\n  }\n\n  function removeJob(id: string) {
+  function exportJobs() {\n    const quote = (value: string) => `"${value.replaceAll('"', '""')}"`;\n    const rows = [["Customer","Email","Phone","Service","Amount USD","Status","Created"], ...jobs.map(job => [job.customer, job.email ?? "", job.phone ?? "", job.service, String(job.amount), job.status, job.createdAt])];\n    const csv = rows.map(row => row.map(quote).join(",")).join("\r\n");\n    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));\n    const link = document.createElement("a"); link.href = url; link.download = "servicekitly-jobs.csv"; link.click(); URL.revokeObjectURL(url);\n  }\n\n  function removeJob(id: string) {
     if (window.confirm("Delete this job from this browser workspace?")) setJobs(current => current.filter(job => job.id !== id));
   }
 
