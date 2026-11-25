@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 type QuoteItem = { id:number; description:string; quantity:string; rate:string };
 const amount=(v:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(v)}catch{return c+" "+v.toFixed(2)}};
 const MAX_AMOUNT=1_000_000_000_000;
@@ -8,6 +8,7 @@ const n=(v:string)=>{const x=raw(v);return Number.isFinite(x)?Math.min(MAX_AMOUN
 const lineAmount=(item:QuoteItem)=>Math.min(MAX_AMOUNT,n(item.quantity)*n(item.rate));
 export default function QuoteGenerator(){
  const [business,setBusiness]=useState("Your Business Name"),[email,setEmail]=useState(""),[client,setClient]=useState(""),[quoteNo,setQuoteNo]=useState("QT-001"),[date,setDate]=useState(()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}),[valid,setValid]=useState(""),[currency,setCurrency]=useState("USD"),[taxRate,setTaxRate]=useState("0"),[notes,setNotes]=useState("This estimate is valid until the date shown above. Work will begin after your approval."),[items,setItems]=useState<QuoteItem[]>([{id:1,description:"Service or project",quantity:"1",rate:"250"}]);
+ useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.get("fromJob")!=="1")return;setClient(params.get("customer")||"");const service=params.get("service")||"";const rate=params.get("amount")||"";if(service||rate)setItems([{id:1,description:service,quantity:"1",rate}]);},[]);
  const taxRateInvalid=taxRate.trim()===""||!Number.isFinite(Number(taxRate))||Number(taxRate)<0||Number(taxRate)>100;
  const subtotal=useMemo(()=>items.reduce((s,x)=>Math.min(MAX_AMOUNT,s+lineAmount(x)),0),[items]);const tax=Math.min(MAX_AMOUNT,subtotal*Math.min(100,n(taxRate))/100);const total=Math.min(MAX_AMOUNT,subtotal+tax);const amountLimitExceeded=items.some(x=>{const q=raw(x.quantity),r=raw(x.rate);return (x.quantity.trim()!==""&&(!Number.isFinite(q)||q>MAX_AMOUNT))||(x.rate.trim()!==""&&(!Number.isFinite(r)||r>MAX_AMOUNT))||n(x.quantity)*n(x.rate)>MAX_AMOUNT;})||subtotal+tax>MAX_AMOUNT;
  const validityInvalid=Boolean(valid&&date&&valid<date);
