@@ -32,6 +32,6 @@ Calculators provide planning estimates, not financial, tax, legal or accounting 
 
 ## Production domain and indexing
 
-Set `NEXT_PUBLIC_SITE_URL` in the Vercel **Production** environment to the final HTTPS domain (for example, `https://www.example.com`) before the production deployment. The layout metadata, canonical URL base, sitemap and robots file read this value automatically. Preview deployments and deployments without a valid production URL are marked `noindex`, disallow crawling and return an empty sitemap to avoid indexing preview URLs or an unowned domain.
+Set `NEXT_PUBLIC_SITE_URL` in the Vercel **Production** environment to the final HTTPS domain (for example, `https://www.example.com`) before the production deployment. The layout metadata, canonical URL base, sitemap and robots file read this value automatically. Preview deployments and deployments without a valid production URL are marked `noindex` and return no sitemap. Crawlers are allowed to read the `noindex` directive rather than being blocked by `robots.txt`.
 
 After connecting the final domain, set the environment variable, redeploy once, and verify the homepage, `/robots.txt`, `/sitemap.xml` and canonical URLs before submitting the sitemap to Google Search Console.
