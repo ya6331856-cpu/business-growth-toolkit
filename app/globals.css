@@ -57,3 +57,11 @@
 
 /* Date validation feedback for generated business documents */
 .field-error{margin:8px 0 12px;padding:9px 11px;border:1px solid #e7b9ad;border-radius:8px;background:#fff4f1;color:#8b3828;font-size:11px;font-weight:650}
+
+
+/* Accessible keyboard focus and motion preferences */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #d9a45b; outline-offset: 3px; }
+.field select:focus, .field textarea:focus { border-color: #6b9d7b; box-shadow: 0 0 0 3px #dff1e7; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
