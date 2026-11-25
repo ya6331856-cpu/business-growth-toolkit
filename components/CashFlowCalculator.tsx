@@ -1,7 +1,10 @@
 "use client";
 import {useMemo,useState} from "react";
 const money=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(n)}catch{return c+" "+n.toFixed(2)}};
-const LIMIT=1_000_000_000_000;\nconst safe=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.min(LIMIT,Math.max(0,n)):0};\nconst bounded=(n:number)=>Math.min(LIMIT,Math.max(-LIMIT,n));\nconst total=(...values:number[])=>Math.min(LIMIT,values.reduce((sum,value)=>sum+value,0));
+const LIMIT=1_000_000_000_000;
+const safe=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.min(LIMIT,Math.max(0,n)):0};
+const bounded=(n:number)=>Math.min(LIMIT,Math.max(-LIMIT,n));
+const total=(...values:number[])=>Math.min(LIMIT,values.reduce((sum,value)=>sum+value,0));
 export default function CashFlowCalculator(){
  const [currency,setCurrency]=useState("USD"),[month,setMonth]=useState(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")});
  const [opening,setOpening]=useState("5000"),[customer,setCustomer]=useState("12000"),[otherIn,setOtherIn]=useState("0"),[operating,setOperating]=useState("4500"),[payroll,setPayroll]=useState("3000"),[debt,setDebt]=useState("500"),[owner,setOwner]=useState("0"),[otherOut,setOtherOut]=useState("0");
