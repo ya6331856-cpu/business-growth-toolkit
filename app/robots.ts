@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
   const productionSiteUrl = process.env.VERCEL_ENV === "production" && configuredSiteUrl?.startsWith("https://") ? configuredSiteUrl : undefined;
 
   if (!productionSiteUrl) {
-    return { rules: { userAgent: "*", disallow: "/" } };
+    return { rules: { userAgent: "*", allow: "/" } };
   }
 
   return {
