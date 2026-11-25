@@ -25,6 +25,7 @@ export default function InvoiceGenerator() {
   const subtotal = useMemo(() => items.reduce((sum, item) => Math.min(MAX_AMOUNT, sum + lineAmount(item)), 0), [items]);
   const tax = Math.min(MAX_AMOUNT, subtotal * Math.min(100, safe(taxRate)) / 100);
   const total = Math.min(MAX_AMOUNT, subtotal + tax);
+  const taxRateInvalid = taxRate.trim() === "" || !Number.isFinite(Number(taxRate)) || Number(taxRate) < 0 || Number(taxRate) > 100;
   const amountLimitExceeded = items.some(item => {
     const qty = rawAmount(item.quantity), rate = rawAmount(item.rate);
     return (item.quantity.trim() !== "" && (!Number.isFinite(qty) || qty > MAX_AMOUNT)) || (item.rate.trim() !== "" && (!Number.isFinite(rate) || rate > MAX_AMOUNT)) || safe(item.quantity) * safe(item.rate) > MAX_AMOUNT;
@@ -49,6 +50,7 @@ export default function InvoiceGenerator() {
         <label className="field"><span>Tax rate (%)</span><input type="number" min="0" max="100" step="0.01" value={taxRate} onChange={e=>setTaxRate(e.target.value)}/></label>
       </div>
       {dueDateInvalid && <p className="field-error" role="alert">Due date must be on or after the issue date.</p>}
+      {taxRateInvalid && <p className="field-error" role="alert">Enter a tax rate between 0 and 100 percent.</p>}
       {amountLimitExceeded && <p className="field-error" role="alert">One or more amounts exceed the supported limit. Reduce the quantity or rate before printing.</p>}
       <div className="invoice-items-heading"><div><span className="field-group-title">ITEMS & SERVICES</span></div><button type="button" className="invoice-add" onClick={addItem}>＋ Add item</button></div>
       <div className="invoice-line-list">
@@ -60,7 +62,7 @@ export default function InvoiceGenerator() {
         </div>)}
       </div>
       <label className="field"><span>Notes / payment terms</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
-      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={dueDateInvalid || amountLimitExceeded}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
+      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={dueDateInvalid || taxRateInvalid || amountLimitExceeded}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
     </section>
     <section className="invoice-preview panel" aria-live="polite">
       <div className="invoice-preview-label">LIVE PREVIEW <span>● UPDATING</span></div>
