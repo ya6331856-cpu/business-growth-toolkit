@@ -20,9 +20,28 @@ const toolItems: ToolItem[] = [
   {icon:"▥",name:"Business Expense Tracker",desc:"Track monthly income, expenses and net profit, then export records to CSV.",href:"/tools/expense-tracker/",tag:"OPERATIONS",category:"Operations",tone:"blue",num:"09"},
   {icon:"▤",name:"Profit & Loss Statement",desc:"Turn tracked monthly income and expenses into a printable financial summary.",href:"/tools/profit-loss-statement/",tag:"FINANCE",category:"Finance",tone:"mint",num:"10"},
   {icon:"↔",name:"Cash Flow Calculator",desc:"Estimate cash coming in, money going out and your projected ending balance.",href:"/tools/cash-flow-calculator/",tag:"FINANCE",category:"Finance",tone:"blue",num:"11"},
+  {icon:"◌",name:"Recurring Revenue Calculator",desc:"Model monthly service revenue with new clients, fees and customer churn.",href:"/tools/recurring-revenue-calculator/",tag:"GROWTH",category:"Growth",tone:"mint",num:"12"},
+  {icon:"⌁",name:"Lead Conversion Calculator",desc:"Measure enquiry conversion, booked revenue and marketing cost per job.",href:"/tools/lead-conversion-calculator/",tag:"MARKETING",category:"Growth",tone:"peach",num:"13"},
+  {icon:"☷",name:"Cleaning Checklist Generator",desc:"Build a room-by-room cleaning worksheet and track completed tasks.",href:"/tools/cleaning-checklist-generator/",tag:"OPERATIONS",category:"Operations",tone:"blue",num:"14"},
+  {icon:"◈",name:"Job Profit Calculator",desc:"See job profit after labour, materials, travel and overhead.",href:"/tools/job-profit-calculator/",tag:"FINANCE",category:"Finance",tone:"peach",num:"15"},
+  {icon:"◷",name:"Cleaning Time Estimator",desc:"Estimate cleaning hours from property size, rooms and team size.",href:"/tools/cleaning-time-estimator/",tag:"CLEANING",category:"Operations",tone:"mint",num:"16"},
+  {icon:"↗",name:"Travel Fee Calculator",desc:"Build a travel charge from distance, vehicle cost and paid time.",href:"/tools/travel-fee-calculator/",tag:"PRICING",category:"Pricing",tone:"blue",num:"17"},
+  {icon:"♙",name:"Staff Cost Calculator",desc:"Budget wages and employer on-costs for your service team.",href:"/tools/staff-cost-calculator/",tag:"OPERATIONS",category:"Operations",tone:"mint",num:"18"},
+  {icon:"％",name:"Discount Calculator",desc:"Calculate customer savings and the final discounted price.",href:"/tools/discount-calculator/",tag:"PRICING",category:"Pricing",tone:"peach",num:"19"},
+  {icon:"▤",name:"Sales Tax Calculator",desc:"Add tax to a price or extract tax already included in a total.",href:"/tools/sales-tax-calculator/",tag:"FINANCE",category:"Finance",tone:"blue",num:"20"},
+  {icon:"◎",name:"Payment Fee Calculator",desc:"Estimate processing fees and the net payment you receive.",href:"/tools/payment-fee-calculator/",tag:"FINANCE",category:"Finance",tone:"mint",num:"21"},
+  {icon:"◷",name:"Late Payment Fee Calculator",desc:"Estimate a simple prorated charge on an overdue invoice.",href:"/tools/late-payment-fee-calculator/",tag:"FINANCE",category:"Finance",tone:"peach",num:"22"},
+  {icon:"▦",name:"Weekly Job Capacity Planner",desc:"Estimate realistic weekly jobs from team hours and utilisation.",href:"/tools/weekly-job-capacity-planner/",tag:"PLANNING",category:"Operations",tone:"blue",num:"23"},
+  {icon:"✉",name:"Customer Review Request Generator",desc:"Create a polite, personalised message asking for honest feedback.",href:"/tools/review-request-generator/",tag:"MARKETING",category:"Growth",tone:"mint",num:"24"},
+  {icon:"☷",name:"Service Scope Builder",desc:"Select tasks and prepare a clear work scope for customers.",href:"/tools/service-scope-builder/",tag:"DOCUMENTS",category:"Documents",tone:"peach",num:"25"},
+  {icon:"◉",name:"Booking Deposit Calculator",desc:"Calculate a booking deposit and the remaining customer balance.",href:"/tools/booking-deposit-calculator/",tag:"PRICING",category:"Pricing",tone:"mint",num:"26"},
+  {icon:"♧",name:"Customer Lifetime Value Calculator",desc:"Estimate customer revenue and gross profit over a relationship.",href:"/tools/customer-lifetime-value-calculator/",tag:"GROWTH",category:"Growth",tone:"blue",num:"27"},
+  {icon:"×",name:"Cancellation Fee Calculator",desc:"Model a disclosed cancellation charge from your booking policy.",href:"/tools/cancellation-fee-calculator/",tag:"OPERATIONS",category:"Operations",tone:"peach",num:"28"},
+  {icon:"✉",name:"Quote Follow-up Message Generator",desc:"Write a polite follow-up for an outstanding customer quote.",href:"/tools/quote-follow-up-generator/",tag:"MARKETING",category:"Growth",tone:"mint",num:"29"},
+  {icon:"◷",name:"Workday Schedule Planner",desc:"Plan job time after breaks and travel are accounted for.",href:"/tools/workday-schedule-planner/",tag:"PLANNING",category:"Operations",tone:"blue",num:"30"},
 ];
 
-const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations"];
+const categories = ["All tools", "Pricing", "Finance", "Documents", "Operations", "Growth"];
 
 export default function ToolDirectory() {
   const [query, setQuery] = useState("");

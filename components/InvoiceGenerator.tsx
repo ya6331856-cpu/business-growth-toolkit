@@ -31,6 +31,7 @@ export default function InvoiceGenerator() {
     return (item.quantity.trim() !== "" && (!Number.isFinite(qty) || qty > MAX_AMOUNT)) || (item.rate.trim() !== "" && (!Number.isFinite(rate) || rate > MAX_AMOUNT)) || safe(item.quantity) * safe(item.rate) > MAX_AMOUNT;
   }) || subtotal + tax > MAX_AMOUNT;
   const dueDateInvalid = Boolean(dueDate && issueDate && dueDate < issueDate);
+  const lineItemsInvalid = items.some(item => !item.description.trim() || item.quantity.trim() === "" || !Number.isFinite(Number(item.quantity)) || Number(item.quantity) <= 0 || item.rate.trim() === "" || !Number.isFinite(Number(item.rate)) || Number(item.rate) < 0);
   const updateItem = (id: number, key: keyof Omit<LineItem, "id">, value: string) => setItems(current => current.map(item => item.id === id ? { ...item, [key]: value } : item));
   const addItem = () => setItems(current => [...current, { id: Math.max(0, ...current.map(item => item.id)) + 1, description: "", quantity: "1", rate: "0" }]);
   const removeItem = (id: number) => setItems(current => current.length > 1 ? current.filter(item => item.id !== id) : current);
@@ -52,17 +53,18 @@ export default function InvoiceGenerator() {
       {dueDateInvalid && <p className="field-error" role="alert">Due date must be on or after the issue date.</p>}
       {taxRateInvalid && <p className="field-error" role="alert">Enter a tax rate between 0 and 100 percent.</p>}
       {amountLimitExceeded && <p className="field-error" role="alert">One or more amounts exceed the supported limit. Reduce the quantity or rate before printing.</p>}
+      {lineItemsInvalid && <p className="field-error" role="alert">Each invoice item needs a description, a quantity greater than zero and a valid non-negative rate.</p>}
       <div className="invoice-items-heading"><div><span className="field-group-title">ITEMS & SERVICES</span></div><button type="button" className="invoice-add" onClick={addItem}>＋ Add item</button></div>
       <div className="invoice-line-list">
         {items.map((item,index)=><div className="invoice-line-editor" key={item.id}>
-          <label className="field"><span>Description</span><input value={item.description} onChange={e=>updateItem(item.id,"description",e.target.value)} placeholder="What did you provide?"/></label>
-          <label className="field"><span>Qty</span><input type="number" min="0" step="any" value={item.quantity} onChange={e=>updateItem(item.id,"quantity",e.target.value)}/></label>
-          <label className="field"><span>Rate ({currency})</span><input type="number" min="0" step="any" value={item.rate} onChange={e=>updateItem(item.id,"rate",e.target.value)}/></label>
+          <label className="field"><span>Description</span><input required value={item.description} onChange={e=>updateItem(item.id,"description",e.target.value)} placeholder="What did you provide?"/></label>
+          <label className="field"><span>Qty</span><input required type="number" min="0.01" step="any" value={item.quantity} onChange={e=>updateItem(item.id,"quantity",e.target.value)}/></label>
+          <label className="field"><span>Rate ({currency})</span><input required type="number" min="0" step="any" value={item.rate} onChange={e=>updateItem(item.id,"rate",e.target.value)}/></label>
           <div className="invoice-line-total"><small>Line total</small><b>{money(lineAmount(item),currency)}</b><button type="button" onClick={()=>removeItem(item.id)} disabled={items.length===1} aria-label={"Remove item "+(index+1)}>Remove</button></div>
         </div>)}
       </div>
       <label className="field"><span>Notes / payment terms</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
-      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={dueDateInvalid || taxRateInvalid || amountLimitExceeded}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
+      <div className="invoice-actions"><button type="button" className="btn-primary" onClick={()=>window.print()} disabled={dueDateInvalid || taxRateInvalid || amountLimitExceeded || lineItemsInvalid}>Print / Save PDF <span>↗</span></button><span>Use your browser’s “Save as PDF” option.</span></div>
     </section>
     <section className="invoice-preview panel" aria-live="polite">
       <div className="invoice-preview-label">LIVE PREVIEW <span>● UPDATING</span></div>

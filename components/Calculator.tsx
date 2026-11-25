@@ -29,6 +29,20 @@ export default function Calculator({ mode }: { mode: Mode }) {
     try { return new Intl.NumberFormat(undefined, { style: "currency", currency, maximumFractionDigits: 2 }).format(value); }
     catch { return currency + " " + value.toFixed(2); }
   };
+  const validNonNegative = (value: string) => value.trim() !== "" && Number.isFinite(Number(value)) && Number(value) >= 0 && Number(value) <= MAX_AMOUNT;
+  const activeInputs = mode === "cleaning"
+    ? [hours, workers, wage, supplies, travel, margin]
+    : mode === "margin"
+      ? [revenue, cost]
+      : mode === "hourly"
+        ? [income, expenses, billable, buffer]
+        : mode === "breakeven"
+          ? [fixedCosts, unitPrice, variableCost]
+          : [unitCost, markup];
+  const invalidInputs = activeInputs.some((value) => !validNonNegative(value)) ||
+    (mode === "hourly" && Number(billable) <= 0) ||
+    (mode === "cleaning" && (!Number.isInteger(Number(workers)) || Number(workers) < 1));
+
   const result = useMemo(() => {
     if (mode === "cleaning") {
       const labour = bounded(Math.max(0,num(hours)) * Math.max(1,Math.floor(num(workers,1))) * Math.max(0,num(wage)));
@@ -43,9 +57,9 @@ export default function Calculator({ mode }: { mode: Mode }) {
       return { main:sales>0?percentage:Number.NaN,cost:totalCost,profit,detail:"Profit margin",percent:Number.isFinite(percentage)?Math.max(0,Math.min(100,percentage)):0 };
     }
     if (mode === "hourly") {
-      const billableHours=Math.max(1,num(billable,1));
+      const billableHours=Number(billable);
       const annualTarget=bounded((Math.max(0,num(income))+Math.max(0,num(expenses)))*(1+Math.max(0,num(buffer))/100));
-      return { main:bounded(annualTarget/billableHours),cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
+      return { main:billableHours>0?bounded(annualTarget/billableHours):Number.NaN,cost:billableHours,profit:annualTarget,detail:"Suggested hourly rate",percent:0 };
     }
     if (mode === "breakeven") {
       const fixed=Math.max(0,num(fixedCosts)), price=Math.max(0,num(unitPrice)), variable=Math.max(0,num(variableCost));
@@ -59,7 +73,7 @@ export default function Calculator({ mode }: { mode: Mode }) {
 
   const field=(label:string,value:string,set:(v:string)=>void,hint?:string,suffix?:string)=>(
     <label className="field"><span>{label}</span><div className="input-wrap">
-      <input type="number" min={label === "Number of workers" ? 1 : 0} step={label === "Number of workers" ? 1 : "any"} inputMode="decimal" value={value} onChange={e=>set(label === "Number of workers" ? String(Math.max(1,Math.floor(num(e.target.value,1)))) : e.target.value)}/>
+      <input type="number" aria-invalid={value.trim() === "" || !Number.isFinite(Number(value)) || Number(value) < (label === "Annual billable hours" ? Number.MIN_VALUE : 0)} min={label === "Number of workers" ? 1 : label === "Annual billable hours" ? "0.01" : 0} step={label === "Number of workers" ? 1 : "any"} inputMode="decimal" value={value} onChange={e=>set(label === "Number of workers" ? String(Math.max(1,Math.floor(num(e.target.value,1)))) : e.target.value)}/>
       {suffix&&<i>{suffix}</i>}
     </div>{hint&&<small>{hint}</small>}</label>
   );
@@ -91,13 +105,14 @@ export default function Calculator({ mode }: { mode: Mode }) {
       <div className="result-topline"><span className="result-spark">✦</span><span>YOUR LIVE ESTIMATE</span><span className="result-live"><i/> UPDATED</span></div>
       <h2>{mode==="cleaning"?"Your suggested quote":mode==="margin"?"Your profit margin":mode==="hourly"?"Your hourly target":mode==="breakeven"?"Your break-even point":"Your suggested price"}</h2>
       <div className="result-caption">{result.detail}</div>
-      <div className="result-value">{mode==="margin"?(Number.isFinite(result.main)?result.main.toFixed(1)+"%":"N/A"):mode==="breakeven"?(Number.isFinite(result.main)?Math.ceil(result.main).toLocaleString()+" units":"Not achievable"):formatMoney(result.main)}</div>
-      {mode!=="hourly"&&mode!=="breakeven"&&<div className="result-progress" aria-label={"Indicator "+result.percent.toFixed(0)+" percent"}><div style={{width:result.percent+"%"}}/></div>}
-      {mode==="cleaning"&&<><div className="result-line"><span>Estimated direct cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Estimated gross profit</span><strong>{formatMoney(result.profit)}</strong></div></>}
-      {mode==="margin"&&<><div className="result-line"><span>Revenue</span><strong>{formatMoney(Math.max(0,num(revenue)))}</strong></div><div className="result-line"><span>Profit / loss</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Total cost</span><strong>{formatMoney(result.cost)}</strong></div></>}
-      {mode==="hourly"&&<><div className="result-line"><span>Annual billable hours</span><strong>{Math.max(1,num(billable,1)).toLocaleString()}</strong></div><div className="result-line"><span>Annual revenue target</span><strong>{formatMoney(result.profit)}</strong></div></>}
-      {mode==="breakeven"&&<><div className="result-line"><span>Fixed costs</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Contribution per unit</span><strong>{formatMoney(result.profit)}</strong></div><p className="result-explainer">{result.cost<=0?"No fixed costs are entered, so the calculated break-even point is 0 units. Check that you have included all costs for this period.":Number.isFinite(result.main)?"Sell at least "+Math.ceil(result.main)+" units in this period to cover the fixed costs.":"Your selling price must be higher than the variable cost per unit to reach break-even."}</p></>}
-      {mode==="markup"&&<><div className="result-line"><span>Item cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Gross profit per item</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Markup</span><strong>{Math.max(0,num(markup)).toFixed(1)}%</strong></div></>}
+      {invalidInputs && <p className="field-error" role="alert">Check your inputs. Enter valid non-negative numbers, and use a value greater than zero for annual billable hours.</p>}
+      <div className="result-value">{invalidInputs?"Check inputs":mode==="margin"?(Number.isFinite(result.main)?result.main.toFixed(1)+"%":"N/A"):mode==="breakeven"?(Number.isFinite(result.main)?Math.ceil(result.main).toLocaleString()+" units":"Not achievable"):formatMoney(result.main)}</div>
+      {!invalidInputs&&mode!=="hourly"&&mode!=="breakeven"&&<div className="result-progress" aria-label={"Indicator "+result.percent.toFixed(0)+" percent"}><div style={{width:result.percent+"%"}}/></div>}
+      {!invalidInputs&&mode==="cleaning"&&<><div className="result-line"><span>Estimated direct cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Estimated gross profit</span><strong>{formatMoney(result.profit)}</strong></div></>}
+      {!invalidInputs&&mode==="margin"&&<><div className="result-line"><span>Revenue</span><strong>{formatMoney(Math.max(0,num(revenue)))}</strong></div><div className="result-line"><span>Profit / loss</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Total cost</span><strong>{formatMoney(result.cost)}</strong></div></>}
+      {!invalidInputs&&mode==="hourly"&&<><div className="result-line"><span>Annual billable hours</span><strong>{Number(billable).toLocaleString()}</strong></div><div className="result-line"><span>Annual revenue target</span><strong>{formatMoney(result.profit)}</strong></div></>}
+      {!invalidInputs&&mode==="breakeven"&&<><div className="result-line"><span>Fixed costs</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Contribution per unit</span><strong>{formatMoney(result.profit)}</strong></div><p className="result-explainer">{result.cost<=0?"No fixed costs are entered, so the calculated break-even point is 0 units. Check that you have included all costs for this period.":Number.isFinite(result.main)?"Sell at least "+Math.ceil(result.main)+" units in this period to cover the fixed costs.":"Your selling price must be higher than the variable cost per unit to reach break-even."}</p></>}
+      {!invalidInputs&&mode==="markup"&&<><div className="result-line"><span>Item cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Gross profit per item</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Markup</span><strong>{Math.max(0,num(markup)).toFixed(1)}%</strong></div></>}
       <div className="result-tip"><span>✧</span><p><b>Keep in mind</b> This is a planning estimate, not financial or tax advice. Check your full overhead, local rules, job scope and market rates before making a business decision.</p></div>
     </aside>
   </div>;

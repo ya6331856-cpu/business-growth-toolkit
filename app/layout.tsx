@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { getProductionSiteUrl } from "@/lib/site-url";
-const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const productionSiteUrl = getProductionSiteUrl();
 
 export const metadata: Metadata = {
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={dmSans.variable}>
+  return <html lang="en"><body className={manrope.variable}>
     <a className="skip-link" href="#main-content">Skip to content</a>
-    <header className="site-header"><a className="brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><nav aria-label="Main navigation"><a href="/tools/">Tools</a><a href="/about/">About</a></nav><a className="header-cta" href="/tools/">Explore tools <span>↗</span></a></header>
+    <header className="site-header"><a className="brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><nav aria-label="Main navigation"><a href="/workspace/">Workspace</a><a href="/tools/">Tools</a><a href="/about/">About</a></nav><a className="header-cta" href="/workspace/">Open workspace <span>↗</span></a></header>
     <main id="main-content">{children}</main>
     <footer className="footer"><div><a className="brand footer-brand" href="/"><span className="brand-mark">S</span><span>servicekitly<span className="brand-dot">.</span></span></a><p>Practical tools for people who run service businesses.</p></div><div className="footer-links"><a href="/tools/">All tools</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div><small>© {new Date().getFullYear()} ServiceKitly. Check local tax and legal requirements before relying on estimates.</small></footer>
   </body></html>;
