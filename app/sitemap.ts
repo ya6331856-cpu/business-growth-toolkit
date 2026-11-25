@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
-  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\\/+$/, "");
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "");
   const base = process.env.VERCEL_ENV === "production" && configuredSiteUrl?.startsWith("https://") ? configuredSiteUrl : undefined;
   if (!base) return [];
   const pages = [
