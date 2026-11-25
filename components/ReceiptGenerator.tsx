@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 const fmt=(v:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(v)}catch{return c+" "+v.toFixed(2)}};
-const num=(v:string)=>{const n=Number(v);return Number.isFinite(n)?Math.max(0,n):0};
+const MAX_AMOUNT=1_000_000_000_000;
+const num=(v:string)=>{const n=Number(v);return Number.isFinite(n)?Math.min(MAX_AMOUNT,Math.max(0,n)):0};
 export default function ReceiptGenerator(){
  const [business,setBusiness]=useState("Your Business Name"),[email,setEmail]=useState(""),[customer,setCustomer]=useState(""),[receiptNo,setReceiptNo]=useState("RCPT-001"),[date,setDate]=useState(()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}),[currency,setCurrency]=useState("USD"),[method,setMethod]=useState("Bank transfer"),[reference,setReference]=useState(""),[description,setDescription]=useState("Payment for services rendered"),[amount,setAmount]=useState("250"),[notes,setNotes]=useState("Thank you for your payment.");
- const paid=num(amount);
+ const paid=num(amount);\n const amountInvalid=amount.trim()===""||!Number.isFinite(Number(amount))||Number(amount)<0.01||Number(amount)>MAX_AMOUNT;
  return <div className="receipt-tool">
  <section className="receipt-editor panel"><div className="panel-kicker"><span>✳</span> PAYMENT DETAILS</div><h2>Create a payment receipt</h2><p className="panel-intro">Record the payment details and preview a clean receipt ready to print or save.</p>
  <div className="invoice-field-grid">
@@ -20,7 +21,7 @@ export default function ReceiptGenerator(){
  <label className="field"><span>Payment for</span><input value={description} onChange={e=>setDescription(e.target.value)} placeholder="Describe the product or service"/></label>
  <label className="field"><span>Amount received ({currency})</span><input type="number" min="0.01" step="0.01" required value={amount} onChange={e=>setAmount(e.target.value)}/></label>
  <label className="field"><span>Additional note</span><textarea rows={3} value={notes} onChange={e=>setNotes(e.target.value)}/></label>
- <div className="invoice-actions">{paid>0&&paid<0.01&&<p className="field-error" role="alert">Enter an amount of at least 0.01 to create a receipt.</p>}<button type="button" className="btn-primary" onClick={()=>window.print()} disabled={paid<0.01}>Print / Save PDF <span>↗</span></button><span>This creates a receipt document only; it does not process payments.</span></div>
+ <div className="invoice-actions">{amountInvalid&&<p className="field-error" role="alert">Enter a valid amount from 0.01 up to 1,000,000,000,000.</p>}<button type="button" className="btn-primary" onClick={()=>window.print()} disabled={amountInvalid}>Print / Save PDF <span>↗</span></button><span>This creates a receipt document only; it does not process payments.</span></div>
  </section>
  <section className="receipt-preview panel" aria-live="polite"><div className="invoice-preview-label">LIVE RECEIPT PREVIEW <span>● UPDATING</span></div>
  <div className="receipt-paper"><div className="receipt-paid-stamp">PAYMENT<br/>RECEIVED</div>
