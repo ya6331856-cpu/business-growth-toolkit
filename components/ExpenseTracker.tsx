@@ -2,7 +2,9 @@
 import { useEffect, useMemo, useState } from "react";
 type Entry={id:number;kind:"income"|"expense";description:string;category:string;amount:string;date:string;currency?:string};
 const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")};
-const value=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.max(0,n):0};
+const LIMIT=1_000_000_000_000;
+const value=(s:string)=>{const n=Number(s);return Number.isFinite(n)?Math.min(LIMIT,Math.max(0,n)):0};
+const boundedTotal=(values:number[])=>Math.min(LIMIT,values.reduce((sum,n)=>sum+n,0));
 const format=(n:number,c:string)=>{try{return new Intl.NumberFormat(undefined,{style:"currency",currency:c,maximumFractionDigits:2}).format(n)}catch{return c+" "+n.toFixed(2)}};
 export default function ExpenseTracker(){
  const [entries,setEntries]=useState<Entry[]>([]),[ready,setReady]=useState(false),[storageSafe,setStorageSafe]=useState(false),[storageError,setStorageError]=useState(false),[kind,setKind]=useState<"income"|"expense">("expense"),[description,setDescription]=useState(""),[category,setCategory]=useState("Supplies"),[amount,setAmount]=useState(""),[date,setDate]=useState(today),[currency,setCurrency]=useState("USD"),[month,setMonth]=useState(today().slice(0,7));
@@ -11,7 +13,7 @@ export default function ExpenseTracker(){
  const monthly=useMemo(()=>month?entries.filter(x=>x.date.startsWith(month)):[],[entries,month]);
  const filtered=monthly.filter(x=>x.currency===currency);
  const legacyCount=monthly.filter(x=>!x.currency).length;
- const income=filtered.filter(x=>x.kind==="income").reduce((s,x)=>s+value(x.amount),0),expenses=filtered.filter(x=>x.kind==="expense").reduce((s,x)=>s+value(x.amount),0),net=income-expenses;
+ const income=boundedTotal(filtered.filter(x=>x.kind==="income").map(x=>value(x.amount))),expenses=boundedTotal(filtered.filter(x=>x.kind==="expense").map(x=>value(x.amount))),net=income-expenses;
  const add=(e:React.FormEvent<HTMLFormElement>)=>{e.preventDefault();if(!storageSafe||!description.trim()||value(amount)<=0||!date)return;setEntries(xs=>[{id:Date.now()+Math.floor(Math.random()*1000),kind,description:description.trim(),category,amount:String(value(amount)),date,currency},...xs]);setDescription("");setAmount("");};
  const exportCsv=()=>{const rows=[["Date","Type","Description","Category","Amount","Currency"],...monthly.map(x=>[x.date,x.kind,x.description,x.category,x.amount,x.currency||"UNKNOWN"])];const csv=rows.map(row=>row.map(cell=>{const raw=String(cell);let index=0;while(index<raw.length&&raw.charCodeAt(index)<=32)index++;const safeCell="=+-@".includes(raw[index]||"")?"'"+raw:raw;return '"'+safeCell.replace(/"/g,'""')+'"'}).join(",")).join(String.fromCharCode(13,10));const blob=new Blob([String.fromCharCode(65279)+csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="servicekitly-business-records-"+month+".csv";document.body.appendChild(a);a.click();a.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1000)};
  const categories=kind==="income"?["Service payment","Product sales","Other income"]:["Supplies","Travel","Equipment","Marketing","Rent","Software","Utilities","Payroll","Other expense"];
