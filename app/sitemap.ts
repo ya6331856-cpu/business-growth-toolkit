@@ -17,6 +17,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/tools/expense-tracker/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/profit-loss-statement/", priority: 0.8, frequency: "monthly" as const },
     { path: "/tools/cash-flow-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/recurring-revenue-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/lead-conversion-calculator/", priority: 0.8, frequency: "monthly" as const },
+    { path: "/tools/cleaning-checklist-generator/", priority: 0.8, frequency: "monthly" as const },
     { path: "/about/", priority: 0.5, frequency: "yearly" as const },
     { path: "/privacy/", priority: 0.3, frequency: "yearly" as const },
     { path: "/terms/", priority: 0.3, frequency: "yearly" as const }
