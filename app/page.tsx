@@ -23,7 +23,7 @@ export default function Home() {
           <span className="hero-label"><i /> THE BUSINESS TOOLKIT FOR SERVICE PROFESSIONALS</span>
           <h1>Make every job<br/><em>work harder.</em></h1>
           <p>Know what to charge. Understand your numbers. Send polished documents. The practical business toolkit built for people who do the work.</p>
-          <div className="hero-actions"><Link className="hero-primary" href="/tools/">Explore the toolkit <span>↗</span></Link><Link className="hero-secondary" href="/tools/house-cleaning-price-calculator/">Calculate a job <span>→</span></Link></div>
+          <div className="hero-actions"><Link className="hero-primary" href="/workspace/">Open your workspace <span>↗</span></Link><Link className="hero-secondary" href="/tools/">Explore free tools <span>→</span></Link></div>
           <div className="hero-assurances"><span><b>✓</b> Free to use</span><span><b>✓</b> No account required</span><span><b>✓</b> Results in seconds</span></div>
         </div>
         <div className="hero-product">
@@ -52,10 +52,10 @@ export default function Home() {
     </section>
 
     <section className="workflow-band">
-      <div className="workflow-band-inner"><div className="workflow-band-copy"><span className="section-kicker">A BETTER WAY TO RUN THE DAY</span><h2>From first estimate<br/>to <em>paid with confidence.</em></h2><p>Build a repeatable routine that protects your time and your margins — without adding another complicated system.</p><Link href="/tools/" className="workflow-cta">Build your workflow <span>↗</span></Link></div>
+      <div className="workflow-band-inner"><div className="workflow-band-copy"><span className="section-kicker">A BETTER WAY TO RUN THE DAY</span><h2>From first estimate<br/>to <em>paid with confidence.</em></h2><p>Build a repeatable routine that protects your time and your margins — without adding another complicated system.</p><Link href="/workspace/" className="workflow-cta">Open your workspace <span>↗</span></Link></div>
       <div className="workflow-list"><div><span>01</span><section><b>Calculate your real costs</b><p>Account for labour, materials, travel and the margin you need.</p></section><i>↗</i></div><div><span>02</span><section><b>Send a clear quote</b><p>Turn the job details into a professional customer estimate.</p></section><i>↗</i></div><div><span>03</span><section><b>Track what you keep</b><p>Review income, expenses and cash flow as you grow.</p></section><i>↗</i></div></div></div>
     </section>
 
-    <section className="home-bottom-cta"><div><span className="section-kicker">YOUR NEXT BETTER BUSINESS DECISION</span><h2>Make the numbers<br/><em>work for you.</em></h2></div><Link href="/tools/" className="hero-primary">Explore all tools <span>↗</span></Link></section>
+    <section className="home-bottom-cta"><div><span className="section-kicker">YOUR NEXT BETTER BUSINESS DECISION</span><h2>Make the numbers<br/><em>work for you.</em></h2></div><Link href="/workspace/" className="hero-primary">Open your workspace <span>↗</span></Link></section>
   </div>;
 }
