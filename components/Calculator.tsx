@@ -38,7 +38,7 @@ export default function Calculator({ mode }: { mode: Mode }) {
     if (mode === "margin") {
       const sales=Math.max(0,num(revenue)), totalCost=Math.max(0,num(cost)), profit=sales-totalCost;
       const percentage=sales>0?(profit/sales)*100:0;
-      return { main:percentage,cost:totalCost,profit,detail:"Profit margin",percent:Math.max(0,Math.min(100,percentage)) };
+      return { main:sales>0?percentage:Number.NaN,cost:totalCost,profit,detail:"Profit margin",percent:Number.isFinite(percentage)?Math.max(0,Math.min(100,percentage)):0 };
     }
     if (mode === "hourly") {
       const billableHours=Math.max(1,num(billable,1));
@@ -89,7 +89,7 @@ export default function Calculator({ mode }: { mode: Mode }) {
       <div className="result-topline"><span className="result-spark">✦</span><span>YOUR LIVE ESTIMATE</span><span className="result-live"><i/> UPDATED</span></div>
       <h2>{mode==="cleaning"?"Your suggested quote":mode==="margin"?"Your profit margin":mode==="hourly"?"Your hourly target":mode==="breakeven"?"Your break-even point":"Your suggested price"}</h2>
       <div className="result-caption">{result.detail}</div>
-      <div className="result-value">{mode==="margin"?result.main.toFixed(1)+"%":mode==="breakeven"?(Number.isFinite(result.main)?Math.ceil(result.main).toLocaleString()+" units":"Not achievable"):formatMoney(result.main)}</div>
+      <div className="result-value">{mode==="margin"?(Number.isFinite(result.main)?result.main.toFixed(1)+"%":"N/A"):mode==="breakeven"?(Number.isFinite(result.main)?Math.ceil(result.main).toLocaleString()+" units":"Not achievable"):formatMoney(result.main)}</div>
       {mode!=="hourly"&&mode!=="breakeven"&&<div className="result-progress" aria-label={"Indicator "+result.percent.toFixed(0)+" percent"}><div style={{width:result.percent+"%"}}/></div>}
       {mode==="cleaning"&&<><div className="result-line"><span>Estimated direct cost</span><strong>{formatMoney(result.cost)}</strong></div><div className="result-line"><span>Estimated gross profit</span><strong>{formatMoney(result.profit)}</strong></div></>}
       {mode==="margin"&&<><div className="result-line"><span>Revenue</span><strong>{formatMoney(Math.max(0,num(revenue)))}</strong></div><div className="result-line"><span>Profit / loss</span><strong>{formatMoney(result.profit)}</strong></div><div className="result-line"><span>Total cost</span><strong>{formatMoney(result.cost)}</strong></div></>}
